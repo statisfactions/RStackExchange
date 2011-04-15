@@ -7,7 +7,8 @@ setRefClass("seBadge",
               name = 'character',
               description = 'character',
               awardCount = 'numeric',
-              tagBased = 'logical'),
+              tagBased = 'logical',
+              site = 'character'),
             )
 
 seBadgeFactory <- getRefClass('seBadge')
@@ -18,15 +19,15 @@ setMethod("show", signature('seBadge'), function(object) {
 })
 
 allBadges <- function(num=NULL, site='stackoverflow') {
-  badgeBase(paste(getAPIStr(site), 'badges', sep=''), num)
+  badgeBase(paste(getAPIStr(site), 'badges', sep=''), site, num)
 }
 
 nameBadges <- function(num=NULL, site='stackoverflow') {
-  badgeBase(paste(getAPIStr(site), 'badges/name', sep=''), num)
+  badgeBase(paste(getAPIStr(site), 'badges/name', sep=''), site, num)
 }
   
 tagBadges <- function(num=NULL, site='stackoverflow') {
-  badgeBase(paste(getAPIStr(site), 'badges/tags', sep=''), num)
+  badgeBase(paste(getAPIStr(site), 'badges/tags', sep=''), site, num)
 }
 
 badgeRecipients <- function(ids, fromDate=NULL, toDate=NULL, num=NULL,
@@ -37,17 +38,11 @@ badgeRecipients <- function(ids, fromDate=NULL, toDate=NULL, num=NULL,
   baseURL <- paste(getAPIStr(site), "badges/",
                    paste(ids, collapse=";"),
                    "?pagesize=100", sep='')
-
-  if (!is.null(fromDate))
-    baseURL <- paste(baseURL, '&fromdate=', as.numeric(fromDate),
-                     sep='')
-  if (!is.null(toDate))
-    baseURL <- paste(baseURL, '&todate=', as.numeric(toDate), sep='')
-
-  userBase(baseURL, num)
+  baseURL <- buildCommonArgs(baseURL, NULL, NULL, NULL, NULL, NULL, fromDate, toDate)
+  userBase(baseURL, site, num)
 }
 
-badgeBase <- function(url, num=NULL) {
+badgeBase <- function(url, site, num=NULL) {
   jsonList <- doAPICall(url)
   if ((!is.null(num)) && (length(jsonList) > num))
     jsonList <- jsonList[1:num]
@@ -57,6 +52,7 @@ badgeBase <- function(url, num=NULL) {
                        name = x[['name']],
                        description = x[['description']],
                        awardCount = x[['award_count']],
-                       tagBased = x[['tag_based']])
+                       tagBased = x[['tag_based']],
+                       site = site)
   })
 }

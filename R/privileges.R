@@ -4,7 +4,8 @@ setRefClass("sePrivilege",
             fields = list(
               shortDescription = 'character',
               description = 'character',
-              reputation = 'numeric'),
+              reputation = 'numeric',
+              site = 'character'),
             methods = list()
             )
 sePrivilegeFactory <- getRefClass('sePrivilege')
@@ -22,6 +23,7 @@ getPrivileges <- function(num=NULL, site='stackoverflow') {
   sapply(jsonList$privileges, function(x) {
     sePrivilegeFactory$new(shortDescription = x[['short_description']],
                            description = x[['description']],
-                           reputation = x[['reputation']])
+                           reputation = x[['reputation']],
+                           site = site)
   })
 }

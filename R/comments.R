@@ -8,7 +8,8 @@ setRefClass("seComment",
               postType = 'character',
               score = 'numeric',
               body = 'character',
-              owner = 'seUser'),
+              owner = 'seUser',
+              site = 'character'),
             methods = list()
             )
 
@@ -36,17 +37,8 @@ getComments <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
     apiStr <- paste('/comments/', idStr, sep='')
   }
   baseURL <- paste(getAPIStr(site), apiStr, '?pagesize=100', sep='')
+  baseURL <- buildCommonArgs(baseURL, NULL, min, max, sort, order, fromDate, toDate)
 
-  for (arg in c('min', 'max', 'sort', 'order')) {
-    val <- get(arg)
-    if (!is.null(val))
-      baseURL <- paste(baseURL, '&', arg, '=', val, sep='')
-  }
-  if (!is.null(fromDate))
-    baseURL <- paste(baseURL, '&fromdate=', as.numeric(fromDate),
-                     sep='')
-  if (!is.null(toDate))
-    baseURL <- paste(baseURL, '&todate=', as.numeric(toDate), sep='')
   jsonList <- doTotalList(baseURL, 'comments', num)
   sapply(jsonList, function(x) {
     curUser <- getUsers(x[['owner']][['user_id']], num=1, site=site)
@@ -62,7 +54,8 @@ getComments <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
                          postType = x[['post_type']],
                          score = x[['score']],
                          body = x[['body']],
-                         owner = curUser)
+                         owner = curUser
+                         site = site)
   })
 }
 

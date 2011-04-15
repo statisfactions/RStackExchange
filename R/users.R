@@ -15,7 +15,8 @@ setRefClass("seUser",
               acceptRate = 'numeric',
               goldBadges = 'numeric',
               silverBadges = 'numeric',
-              bronzeBadges = 'numeric'),
+              bronzeBadges = 'numeric',
+              site = 'character'),
             methods = list(
               ),
             )
@@ -34,29 +35,23 @@ getUsers <- function(ids, num=NULL, site='stackoverflow') {
   baseURL <- paste(getAPIStr(site), "users/",
                    paste(ids, collapse=';'),
                    "?pagesize=100", sep='')
-  userBase(baseURL, num)
+  userBase(baseURL, site, num)
 }
 
 searchUsers <- function(num=NULL, filter=NULL, fromDate=NULL, toDate=NULL,
                         min=NULL, max=NULL, sort=NULL, order=NULL,
                         site='stackoverflow') {
   baseURL <- paste(getAPIStr(site), "users?pagesize=100", sep='')
-
-  for (arg in c('filter', 'min', 'max', 'sort', 'order')) {
-    val <- get(arg)
-    if (!is.null(val))
-      baseURL <- paste(baseURL, '&', arg, '=', val, sep='')
-  }
-  if (!is.null(fromDate))
-    baseURL <- paste(baseURL, '&fromdate=', as.numeric(fromDate),
-                     sep='')
-  if (!is.null(toDate))
-    baseURL <- paste(baseURL, '&todate=', as.numeric(toDate), sep='')
-  userBase(baseURL, num)
+  baseURL <- buildCommonArgs(baseURL, filter, min, max, sort, order, fromDate, toDate)
+  userBase(baseURL, site, num)
 }
 
-userBase <- function(baseURL, num=NULL) {
+userBase <- function(baseURL, site, num=NULL) {
   jsonList <- doTotalList(baseURL, 'users', num)
+  buildUsersFromList(jsonList, site)
+}
+
+buildUsersFromList <- function(jsonList, site) {
   sapply(jsonList, function(x) {
     seUserFactory$new(userID = x[['user_id']],
                       userType = x[['user_type']],
@@ -74,6 +69,7 @@ userBase <- function(baseURL, num=NULL) {
                       downVoteCount = x[['down_vote_count']],
                       goldBadges = x[['badge_counts']][['gold']],
                       silverBadges = x[['badge_counts']][['silver']],
-                      bronzeBadges = x[['badge_counts']][['bronze']])
+                      bronzeBadges = x[['badge_counts']][['bronze']],
+                      site = site)
   })
-}
+buil}
