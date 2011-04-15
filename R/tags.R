@@ -1,3 +1,5 @@
+## DONE (minus wikis)
+
 getTop <- function(type, period) {
   if (! period %in% c('month', 'all-time'))
     stop("period parameter must be 'month' or 'all-time'")
@@ -49,7 +51,7 @@ getTagSynonyms <- function(num=NULL, tags=NULL, fromDate=NULL, toDate=NULL,
 }
 
 getTagWikis <- function(tags, num=NULL, site='stackoverflow') {
-  FOO
+  ## FIXME:  Not implemented at the moment
 }
             
 baseTags <- function(url, site, num=NULL) {

@@ -40,22 +40,22 @@ getComments <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
   baseURL <- buildCommonArgs(baseURL, NULL, min, max, sort, order, fromDate, toDate)
 
   jsonList <- doTotalList(baseURL, 'comments', num)
-  sapply(jsonList, function(x) {
-    curUser <- getUsers(x[['owner']][['user_id']], num=1, site=site)
-    if (length(curUser) == 0)
-      curUser <- seUserFactory$new()
-    else
-      curUser <- curUser[[1]]
-    
-    seCommentFactory$new(commentID = x[['comment_id']],
-                         creationDate = as.POSIXct(x[['creation_date']],
-                           origin='1970-01-01'),
-                         postID = x[['post_id']],
-                         postType = x[['post_type']],
-                         score = x[['score']],
-                         body = x[['body']],
-                         owner = curUser
-                         site = site)
-  })
+  sapply(jsonList, buildComment, site)
 }
 
+buildComment <- function(x, site) {
+  curUser <- getUsers(x[['owner']][['user_id']], num=1, site=site)
+  if (length(curUser) == 0)
+    curUser <- seUserFactory$new()
+  else
+    curUser <- curUser[[1]]
+  seCommentFactory$new(commentID = x[['comment_id']],
+                       creationDate = as.POSIXct(x[['creation_date']],
+                         origin='1970-01-01'),
+                       postID = x[['post_id']],
+                       postType = x[['post_type']],
+                       score = x[['score']],
+                       body = x[['body']],
+                       owner = curUser,
+                       site = site)
+}
