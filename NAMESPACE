@@ -1,0 +1,16 @@
+exportClasses('seAnswer', 'seBadge', 'seComment', 'sePrivilege',
+              'seQuestion', 'seTag', 'seUser')
+exportMethods('show')
+
+export('getAnswers')
+export('allBadges')
+export('nameBadges')
+export('tagBadges')
+export('badgeRecipients')
+export('getComments')
+export('getPrivileges')
+export('searchStackSite')
+export('getTags')
+export('getTagSynonyms')
+export('getUsers')
+export('searchUsers')
