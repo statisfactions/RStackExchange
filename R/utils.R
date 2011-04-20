@@ -2,7 +2,9 @@ getAPIStr <- function(site='stackoverflow') {
   paste('http://api.', site, '.com/1.1/', sep='')
 }
 
-buildCommonArgs <- function(baseURL, filter, min, max, sort, order, fromDate, toDate) {
+buildCommonArgs <- function(baseURL, filter=NULL, min=NULL,
+                            max=NULL, sort=NULL, order=NULL,
+                            fromDate=NULL, toDate=NULL) {
   for (arg in c('filter', 'min', 'max', 'sort', 'order')) {
     val <- get(arg)
     if (!is.null(val))

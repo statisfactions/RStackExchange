@@ -1,5 +1,3 @@
-## FIXME:  DONE
-
 setRefClass("seBadge",
             fields = list(
               badgeID = 'character',
@@ -38,7 +36,7 @@ badgeRecipients <- function(ids, fromDate=NULL, toDate=NULL, num=NULL,
   baseURL <- paste(getAPIStr(site), "badges/",
                    paste(ids, collapse=";"),
                    "?pagesize=100", sep='')
-  baseURL <- buildCommonArgs(baseURL, NULL, NULL, NULL, NULL, NULL, fromDate, toDate)
+  baseURL <- buildCommonArgs(baseURL, fromDate=fromDate, toDate=toDate)
   userBase(baseURL, site, num)
 }
 

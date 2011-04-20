@@ -1,5 +1,3 @@
-## FIXME:  DONE
-
 setRefClass("sePrivilege",
             fields = list(
               shortDescription = 'character',

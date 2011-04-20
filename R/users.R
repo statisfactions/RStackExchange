@@ -54,7 +54,9 @@ searchUsers <- function(num=NULL, filter=NULL, fromDate=NULL, toDate=NULL,
                         min=NULL, max=NULL, sort=NULL, order=NULL,
                         site='stackoverflow') {
   baseURL <- paste(getAPIStr(site), "users?pagesize=100", sep='')
-  baseURL <- buildCommonArgs(baseURL, filter, min, max, sort, order, fromDate, toDate)
+  baseURL <- buildCommonArgs(baseURL, filter=filter, min=min, max=max,
+                             sort=sort, order=order, fromDate=fromDate,
+                             toDate=toDate)
   userBase(baseURL, site, num)
 }
 

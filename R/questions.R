@@ -34,7 +34,8 @@ buildQuestion <- function(x, site) {
     curUser <- curUser[[1]]
   comments <- lapply(x[['comments']], buildComment, site)
   answers <- lapply(x[['answers']], buildAnswer, site)
-  ## FIXME:  Dont' see a way right now to convert the tags return into seTag objects
+  ## FIXME:  Dont' see a way right now to convert the tags return into
+  ## seTag objects
   seQuestionFactory$new(questionID= x[['question_id']],
                         creationDate = as.POSIXct(x[['creation_date']],
                           origin='1970-01-01'),
@@ -46,7 +47,8 @@ buildQuestion <- function(x, site) {
                         answerCount = x[['answer_count']],
                         viewCount = x[['view_count']],
                         score = x[['score']],
-                        communityOwned = ifelse(x[['community_owned']], TRUE, FALSE),
+                        communityOwned = ifelse(x[['community_owned']],
+                          TRUE, FALSE),
                         title = x[['title']],
                         site = site, owner=curUser, comments=comments,
                         tags = as.list(x[['tags']]),
@@ -55,41 +57,44 @@ buildQuestion <- function(x, site) {
 }
 
 getQuestions <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
-                         min=NULL, max=NULL, sort=NULL, order=NULL, tagged=NULL,
-                         site='stackoverflow') {
+                         min=NULL, max=NULL, sort=NULL, order=NULL,
+                         tagged=NULL, site='stackoverflow') {
   jsonList <- questionBase(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
-                           min=min, max=max, sort=sort, order=order, tagged=tagged)
+                           min=min, max=max, sort=sort, order=order,
+                           tagged=tagged)
   sapply(jsonList, buildQuestion, site)
 }
 
-getUnansweredQuestions <- function(num=num, fromDate=fromDate, toDate=toDate,
-                           min=min, max=max, sort=sort, order=order, tagged=NULL,
-                                   site='stackoverflow') {
+getUnansweredQuestions <- function(num=NULL, fromDate=NULL, toDate=NULL,
+                                   min=NULL, max=NULL, sort=NULL, order=NULL,
+                                   tagged=NULL, site='stackoverflow') {
   jsonList <- questionBase(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
-                           min=min, max=max, sort=sort, order=order, urlExtras='/unanswered',
-                           site=site, tagged=tagged)
+                           min=min, max=max, sort=sort, order=order,
+                           urlExtras='/unanswered', site=site, tagged=tagged)
   sapply(jsonList, buildQuestion, site)
 }
 
-getNoAnswerQuestions <- function(num=num, fromDate=fromDate, toDate=toDate,
-                                 min=min, max=max, sort=sort, order=order, tagged=NULL,
-                                 site='stackoverflow') {
+getNoAnswerQuestions <- function(num=NULL, fromDate=NULL, toDate=NULL,
+                                 min=NULL, max=NULL, sort=NULL, order=NULL,
+                                 tagged=NULL, site='stackoverflow') {
   jsonList <- questionBase(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
-                           min=min, max=max, sort=sort, order=order, urlExtras='/no-answers',
-                           site=site, tagged=tagged)
+                           min=min, max=max, sort=sort, order=order,
+                           urlExtras='/no-answers', site=site, tagged=tagged)
   sapply(jsonList, buildQuestion, site)
 }
 
-getQuestionLinks <- function(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
-                           min=min, max=max, sort=sort, order=order, site='stackoverflow') {
+getQuestionLinks <- function(num=NULL, ids=NULL, fromDate=NULL,
+                             toDate=NULL, min=NULL, max=NULL, sort=NULL,
+                             order=NULL, site='stackoverflow') { 
   jsonList <- questionBase(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
-                           min=min, max=max, sort=sort, order=order, urlExtras='/linked',
-                           site=site)
+                           min=min, max=max, sort=sort, order=order,
+                           urlExtras='/linked', site=site)
   sapply(jsonList, buildQuestion, site)
 }
 
-getQuestionRelated <- function(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
-                           min=min, max=max, sort=sort, order=order, site='stackoverflow') {
+getQuestionRelated <- function(num=NULL, ids=NULL, fromDate=NULL,
+                               toDate=NULL, min=NULL, max=NULL, sort=NULL,
+                               order=NULL, site='stackoverflow') {
   jsonList <- questionBase(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
                            min=min, max=max, sort=sort, order=order, site=site,
                            urlExtras='/related')
@@ -99,16 +104,19 @@ getQuestionRelated <- function(num=num, ids=NULL, fromDate=fromDate, toDate=toDa
 ## FIXME:  Skipping timeline for now
 
 questionBase <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
-                         min=NULL, max=NULL, sort=NULL, order=NULL, tagged=NULL,
-                         site='stackoverflow', urlExtras='', field='questions') {
+                         min=NULL, max=NULL, sort=NULL, order=NULL,
+                         tagged=NULL, site='stackoverflow', urlExtras='',
+                         field='questions') {
   if (is.null(ids))
     idStr <- ''
   else
     idStr <- paste(paste(ids, collapse=';'), '/', sep='')
-
+  
   baseURL <- paste(getAPIStr(site), '/questions', idStr, urlExtras,
-                   '?pagesize=100&body=true&comments=true&answers=true', sep='')
-  baseURL <- buildCommonArgs(baseURL, NULL, min, max, sort, order, fromDate, toDate)
+                   '?pagesize=100&body=true&comments=true&answers=true',
+                   sep='')
+  baseURL <- buildCommonArgs(baseURL, NULL, min, max, sort, order,
+                             fromDate, toDate)
   if (!is.null(tagged))
     baseURL <- paste(baseURL, '&tagged=', paste(tagged, collapse=';'), sep='')
   doTotalList(baseURL, field, num)

@@ -1,4 +1,4 @@
-## DONE (minus wikis)
+## FIXME:  Skipping wikis for now
 
 getTop <- function(type, period) {
   if (! period %in% c('month', 'all-time'))
@@ -33,21 +33,26 @@ setMethod('show', signature('seTag'), function(object) {
 })
 
 getTags <- function(num=NULL, filter=NULL, fromDate=NULL, toDate=NULL,
-                       min=NULL, max=NULL, sort=NULL, order=NULL, site='stackoverflow') {
+                       min=NULL, max=NULL, sort=NULL, order=NULL,
+                    site='stackoverflow') {
   baseURL <- paste(getAPIStr(site), 'tags?pagesize=100', sep='')
-  baseURL <- buildCommonArgs(baseURL, filter, min, max, sort, order, fromDate, toDate)
+  baseURL <- buildCommonArgs(baseURL, filter=filter, min=min, max=max,
+                             sort=sort, order=order, fromDate=fromDate,
+                             toDate=toDate)
   baseTags(baseURL, site, num)
 }
 
 getTagSynonyms <- function(num=NULL, tags=NULL, fromDate=NULL, toDate=NULL,
-                           min=NULL, max=NULL, sort=NULL, order=NULL, site='stackoverflow') {
+                           min=NULL, max=NULL, sort=NULL, order=NULL,
+                           site='stackoverflow') {
   if (is.null(tags))
     tagStr <- ''
   else
     tagStr <- paste(paste(tags, collapse=';'), '/', sep='')
   
   baseURL <- paste(getAPIStr(site), 'tags/', tagStr, 'synonyms?pagesize=100', sep='')
-  baseURL <- buildCommonArgs(baseURL, filter, min, max, sort, order, fromDate, toDate)
+  baseURL <- buildCommonArgs(baseURL, filter=filter, min=min, sort=sort,
+                             order=order, fromDate=fromDate, toDate=toDate)
   baseTags(baseURL, site, num)
 }
 

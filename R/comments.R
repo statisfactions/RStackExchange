@@ -37,7 +37,9 @@ getComments <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
     apiStr <- paste('/comments/', idStr, sep='')
   }
   baseURL <- paste(getAPIStr(site), apiStr, '?pagesize=100', sep='')
-  baseURL <- buildCommonArgs(baseURL, NULL, min, max, sort, order, fromDate, toDate)
+  baseURL <- buildCommonArgs(baseURL, min=min, max=max, sort=sort,
+                             order=order, fromDate=fromDate,
+                             toDate=toDate)
 
   jsonList <- doTotalList(baseURL, 'comments', num)
   sapply(jsonList, buildComment, site)

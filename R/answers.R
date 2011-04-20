@@ -12,6 +12,7 @@ setRefClass("seAnswer",
               communityOwned = 'logical',
               title = 'character',
               comments = 'list',
+              body = 'character',
               site = 'character'),
             methods = list(
               getQuestion = function() {
@@ -28,15 +29,17 @@ setMethod("show", signature="seAnswer", function(object) {
 })
 
 getAnswers <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
-                       min=NULL, max=NULL, sort=NULL, order=NULL, site='stackoverflow') {
+                       min=NULL, max=NULL, sort=NULL, order=NULL,
+                       site='stackoverflow') {
   if (is.null(ids))
     idStr <- ''
   else
     idStr <- paste(paste(ids, collapse=';'), '/', sep='')
 
-  baseURL <- paste(getAPIStr(site), '/answers', idStr, '?pagesize=100&body=true&comments=true',
-                   sep='')
-  baseURL <- buildCommonArgs(baseURL, NULL, min, max, sort, order, fromDate, toDate)
+  baseURL <- paste(getAPIStr(site), '/answers', idStr,
+                   '?pagesize=100&body=true&comments=true',sep='')
+  baseURL <- buildCommonArgs(baseURL, min=NULL, max=NULL, sort=NULL,
+                             order=NULL, fromDate=NULL, toDate=NULL)
   jsonList <- doTotalList(baseURL, 'answers', num)
   sapply(jsonList, buildAnswer)
 }
@@ -58,8 +61,10 @@ buildAnswer <- function(x, site) {
                       upVoteCount = x[['up_vote_count']],
                       downVoteCount = x[['down_vote_count']],
                       score = x[['score']],
-                      communityOwned = ifelse(x[['community_owned']], TRUE, FALSE),
+                      communityOwned = ifelse(x[['community_owned']],
+                        TRUE, FALSE),
                       title = x[['title']],
+                      body = x[['body']],
                       site = site, owner=curUser, comments=comments)
 }
 
