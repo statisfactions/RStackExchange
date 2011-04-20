@@ -1,4 +1,24 @@
+apiKey <- new.env(hash=TRUE)
+requests <- new.env(hash=TRUE)
+
+registerAPIKey <- function(key) {
+  assign('key', key, envir=apiKey)
+}
+
+hasAPIKey <- function() {
+  exists('key', envir=apiKey)
+}
+
+getAPIKey <- function() {
+  get('key', envir=apiKey)
+}
+
 doAPICall <- function(url, ...) {
+  ## FIXME:  Will get blocked if more than 30 requests in 5 seconds are made.
+  ##   Detect if this happens and automagically limit things.
+  key <- try(getAPIKey(), silent=TRUE)
+  if (!inherits(key, 'try-error'))
+    url <- paste(url, '&key=', key)
   json <- getURL(url, .opts=list(encoding="identity,gzip"))
   out <- fromJSON(json)
 
