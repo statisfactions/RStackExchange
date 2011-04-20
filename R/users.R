@@ -18,6 +18,18 @@ setRefClass("seUser",
               bronzeBadges = 'numeric',
               site = 'character'),
             methods = list(
+              topAnswersByTags = function(tags) {
+
+              },
+              topQuestionsByTags = function(tags) {
+
+              },
+              topTagsByAnswers = function() {
+
+              },
+              topTagsByQuestions = function() {
+
+              }
               ),
             )
 
@@ -48,28 +60,26 @@ searchUsers <- function(num=NULL, filter=NULL, fromDate=NULL, toDate=NULL,
 
 userBase <- function(baseURL, site, num=NULL) {
   jsonList <- doTotalList(baseURL, 'users', num)
-  buildUsersFromList(jsonList, site)
+  sapply(jsonList, buildUser, site)
 }
 
-buildUsersFromList <- function(jsonList, site) {
-  sapply(jsonList, function(x) {
-    seUserFactory$new(userID = x[['user_id']],
+buildUser <- function(x, site) {
+  seUserFactory$new(userID = x[['user_id']],
                       userType = x[['user_type']],
-                      creationDate = as.POSIXct(x[['creation_date']],
-                        origin='1970-01-01'),
-                      displayName = x[['display_name']],
-                      reputation = x[['reputation']],
-                      lastAccessDate = as.POSIXct(x[['last_access_date']],
-                        origin='1970-01-01'),
-                      aboutMe = x[['about_me']],
-                      questionCount = x[['question_count']],
-                      answerCount = x[['answer_count']],
-                      viewCount = x[['view_count']],
-                      upVoteCount = x[['up_vote_count']],
-                      downVoteCount = x[['down_vote_count']],
-                      goldBadges = x[['badge_counts']][['gold']],
-                      silverBadges = x[['badge_counts']][['silver']],
-                      bronzeBadges = x[['badge_counts']][['bronze']],
-                      site = site)
-  })
-buil}
+                    creationDate = as.POSIXct(x[['creation_date']],
+                      origin='1970-01-01'),
+                    displayName = x[['display_name']],
+                    reputation = x[['reputation']],
+                    lastAccessDate = as.POSIXct(x[['last_access_date']],
+                      origin='1970-01-01'),
+                    aboutMe = x[['about_me']],
+                    questionCount = x[['question_count']],
+                    answerCount = x[['answer_count']],
+                    viewCount = x[['view_count']],
+                    upVoteCount = x[['up_vote_count']],
+                    downVoteCount = x[['down_vote_count']],
+                    goldBadges = x[['badge_counts']][['gold']],
+                    silverBadges = x[['badge_counts']][['silver']],
+                    bronzeBadges = x[['badge_counts']][['bronze']],
+                    site = site)
+}

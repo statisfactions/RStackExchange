@@ -21,7 +21,8 @@ setRefClass("seTag",
               },
               topAnswerers = function(period) {
                 getTop('top-answerers', period)
-              )            
+              }
+            )
             )
 
 seTagFactory <- getRefClass('seTag')
@@ -31,7 +32,7 @@ setMethod('show', signature('seTag'), function(object) {
   print(object$getName())
 })
 
-searchTags <- function(num=NULL, filter=NULL, fromDate=NULL, toDate=NULL,
+getTags <- function(num=NULL, filter=NULL, fromDate=NULL, toDate=NULL,
                        min=NULL, max=NULL, sort=NULL, order=NULL, site='stackoverflow') {
   baseURL <- paste(getAPIStr(site), 'tags?pagesize=100', sep='')
   baseURL <- buildCommonArgs(baseURL, filter, min, max, sort, order, fromDate, toDate)

@@ -1,9 +1,6 @@
 doAPICall <- function(url, ...) {
-  buf <- binaryBuffer()
-  getURI(url, write=getNativeSymbolInfo("R_curl_write_binary_data")$address,
-         file=buf@ref)
-  b <- as(buf, 'raw')
-  out <- fromJSON(gunzip(b))
+  json <- getURL(url, .opts=list(encoding="identity,gzip"))
+  out <- fromJSON(json)
 
   if ('error' %in% names(out)) {
     stop("Error ", out$error$code, ": ", out$error$message)
