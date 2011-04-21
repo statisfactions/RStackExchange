@@ -43,7 +43,6 @@ setMethod("show", signature="seUser", function(object) {
 getUsers <- function(ids, num=NULL, site='stackoverflow') {
   ## FIXME:  See if parameters work on the site, if so
   ## work this into searchUsers
-  remaining <- length(ids)
   baseURL <- paste(getAPIStr(site), "users/",
                    paste(ids, collapse=';'),
                    "?pagesize=100", sep='')

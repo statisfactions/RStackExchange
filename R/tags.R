@@ -1,12 +1,11 @@
 ## FIXME:  Skipping wikis for now
 
-getTop <- function(type, period) {
+getTop <- function(obj, type, period) {
   if (! period %in% c('month', 'all-time'))
     stop("period parameter must be 'month' or 'all-time'")
-  json <- doAPICall(paste(getAPIStr(.self$site), 'tags/',
-                          .self$name, '/', type, '/', period, sep=''))
-  buildUsersFromList(json[['top_users']])
-
+  json <- doAPICall(paste(getAPIStr(obj$site), 'tags/',
+                          obj$name, '/', type, '/', period, sep=''))
+  sapply(json[['top_users']], buildUser, obj$getSite())
 }
 
 setRefClass("seTag",
@@ -17,10 +16,10 @@ setRefClass("seTag",
               site = 'character'),
             methods = list(
               topAskers = function(period) {
-                getTop('top-askers', period)
+                getTop(.self, 'top-askers', period)
               },
               topAnswerers = function(period) {
-                getTop('top-answerers', period)
+                getTop(.self, 'top-answerers', period)
               }
             )
             )

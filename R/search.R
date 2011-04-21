@@ -11,7 +11,7 @@ searchStackSite <- function(num=NULL, intitle=NULL, notTagged=NULL,
                      sep='')
   if (!is.null(tagged))
     baseURL <- paste(baseURL, '&tagged=', paste(tagged, collapse=';'), sep='')
-  jsonList <- doTotalLIst(baseURL, 'questions', num)
+  jsonList <- doTotalList(baseURL, 'questions', num)
   ## FIXME: Here is the problem - these questions aren't complete.
   ## For now I'm going to do the horribly inefficient thing and regrab
   ## the questions based on the IDs to get the full versions
