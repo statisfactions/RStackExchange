@@ -14,8 +14,8 @@ getAPIKey <- function() {
 }
 
 
-## The apiCallQueue class is just a way to prevent rate throttling.  We can't send more than
-## 30 requests in a 5 second period.
+## The apiCallQueue class is just a way to prevent rate throttling.
+## We can't send more than 30 requests in a 5 second period.
 setRefClass('apiCallQueue',
             fields = list(
               calls = 'list'

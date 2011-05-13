@@ -1,5 +1,3 @@
-## FIXME:  DONE
-
 setRefClass("seComment",
             fields = list(
               commentID = 'character',
