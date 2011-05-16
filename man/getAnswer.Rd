@@ -35,7 +35,7 @@ getAnswers(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
 \author{Jeff Gentry}
 \seealso{\code{\link{seAnswer}}}
 \examples{
-     zz <- getAnswers(fromDate=as.POSIXct('2009-09-25'),
+     zz <- getAnswers(num=3, fromDate=as.POSIXct('2009-09-25'),
                       toDate=as.POSIXct('2010-05-30'))
 }
 \keyword{interface}

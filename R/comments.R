@@ -22,40 +22,42 @@ setMethod('show', signature('seComment'), function(object) {
 getComments <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
                         min=NULL, max=NULL, sort=NULL, order=NULL,
                         idsArePosts=FALSE, site='stackoverflow') {
-  if (!is.null(ids))
-    idStr <- paste(ids, collapse=';')
-  else
-    idStr <- ''
-  
+  params <- buildCommonArgs(fromDate=fromDate, toDate=toDate, min=min, max=max, sort=sort,
+                            order=order)
   if (idsArePosts) {
     if (length(ids) < 1)
       stop("Must provide at least one post ID if idsArePosts=TRUE")
-    apiStr <- paste("posts/", idStr, '/comments', sep='')
+    call <- 'posts'
+    postVec <- 'comments'
   } else {
-    apiStr <- paste('/comments/', idStr, sep='')
+    call <- 'comments'
+    postVec <- NULL
   }
-  baseURL <- paste(getAPIStr(site), apiStr, '?pagesize=100', sep='')
-  baseURL <- buildCommonArgs(baseURL, min=min, max=max, sort=sort,
-                             order=order, fromDate=fromDate,
-                             toDate=toDate)
-
-  jsonList <- doTotalList(baseURL, 'comments', num)
-  sapply(jsonList, buildComment, site)
+  jsonList <- doTotalList(call, ids, postVec, params, 'comments', num=num, site=site)
+  buildComments(jsonList, site)
 }
 
-buildComment <- function(x, site) {
-  curUser <- getUsers(x[['owner']][['user_id']], num=1, site=site)
-  if (length(curUser) == 0)
-    curUser <- seUserFactory$new()
-  else
-    curUser <- curUser[[1]]
-  seCommentFactory$new(commentID = x[['comment_id']],
-                       creationDate = as.POSIXct(x[['creation_date']],
-                         origin='1970-01-01'),
-                       postID = x[['post_id']],
-                       postType = x[['post_type']],
-                       score = x[['score']],
-                       body = x[['body']],
-                       owner = curUser,
-                       site = site)
+
+buildComments <- function(jsonList, site) {
+  userIDs <- sapply(jsonList, function(x) x[['owner']][['user_id']])
+  users <- getUsers(userIDs, length(userIDs), site)
+  ## users might not necessarily match up with userIDs due to missing values, duplications, etc
+  ## Attach the IDs as the names to the user list, and then pass both into the mapply(),
+  ## this allows us to cycle through the IDs and then match the appropriate user
+  names(users) <- sapply(users, function(x) x$getUserID())
+  mapply(function(json, userID, users, site) {
+    if (userID %in% names(users))
+      curUser <- users[[as.character(userID)]]
+    else
+      curUser <- seUserFactory$new()
+    seCommentFactory$new(commentID = json[['comment_id']],
+                         creationDate = as.POSIXct(json[['creation_date']],
+                           origin='1970-01-01'),
+                         postID = json[['post_id']],
+                         postType = json[['post_type']],
+                         score = json[['score']],
+                         body = json[['body']],
+                         owner = curUser,
+                         site = site)  
+  }, jsonList, userIDs, MoreArgs=list(site=site, users=users))
 }

@@ -43,24 +43,20 @@ setMethod("show", signature="seUser", function(object) {
 getUsers <- function(ids, num=NULL, site='stackoverflow') {
   ## FIXME:  See if parameters work on the site, if so
   ## work this into searchUsers
-  baseURL <- paste(getAPIStr(site), "users/",
-                   paste(ids, collapse=';'),
-                   "?pagesize=100", sep='')
-  userBase(baseURL, site, num)
+  userBase(ids, params=NULL, num=num, site=site)
 }
 
 searchUsers <- function(num=NULL, filter=NULL, fromDate=NULL, toDate=NULL,
                         min=NULL, max=NULL, sort=NULL, order=NULL,
                         site='stackoverflow') {
-  baseURL <- paste(getAPIStr(site), "users?pagesize=100", sep='')
-  baseURL <- buildCommonArgs(baseURL, filter=filter, min=min, max=max,
-                             sort=sort, order=order, fromDate=fromDate,
-                             toDate=toDate)
-  userBase(baseURL, site, num)
+  params <- buildCommonArgs(filter=filter, fromDate=fromDate, toDate=toDate, min=min,
+                           max=max, sort=sort, order=order)
+  userBase(NULL, params, num, site)
 }
 
-userBase <- function(baseURL, site, num=NULL) {
-  jsonList <- doTotalList(baseURL, 'users', num)
+userBase <- function(ids, params, num, site) {
+  params[['pagesize']] <- 100
+  jsonList <- doTotalList('users', ids, NULL, params, 'users', num, site)
   sapply(jsonList, buildUser, site)
 }
 

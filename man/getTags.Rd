@@ -52,6 +52,7 @@ getTagSynonyms(num = NULL, tags = NULL, fromDate = NULL, toDate = NULL,
 }
 \examples{
     zz <- getTags(filter='java', num=25)
-    xx <- getTagSynonyms(num=3, tags=zz, order='desc')
+    tags <- sapply(zz, function(x) x$getName())
+    xx <- getTagSynonyms(num=3, tags=tags, order='desc')
 }
 \keyword{interface}

@@ -31,41 +31,42 @@ setMethod("show", signature="seAnswer", function(object) {
 getAnswers <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
                        min=NULL, max=NULL, sort=NULL, order=NULL,
                        site='stackoverflow') {
-  if (is.null(ids))
-    idStr <- ''
-  else
-    idStr <- paste(paste(ids, collapse=';'), '/', sep='')
-
-  baseURL <- paste(getAPIStr(site), '/answers', idStr,
-                   '?pagesize=100&body=true&comments=true',sep='')
-  baseURL <- buildCommonArgs(baseURL, min=NULL, max=NULL, sort=NULL,
-                             order=NULL, fromDate=NULL, toDate=NULL)
-  jsonList <- doTotalList(baseURL, 'answers', num)
-  sapply(jsonList, buildAnswer)
+  params <- buildCommonArgs(fromDate=fromDate, toDate=toDate, min=min, max=max, sort=sort,
+                           order=order)
+  jsonList <- doTotalList('answers', ids, NULL, params, 'answers', num=num, site=site)
+  buildAnswers(jsonList, site)
 }
 
-buildAnswer <- function(x, site) {
-  curUser <- getUsers(x[['owner']][['user_id']], num=1, site=site)
-  if (length(curUser) == 0)
-    curUser <- seUserFactory$new()
-  else
-    curUser <- curUser[[1]]
-  comments <- lapply(x[['comments']], buildComment, site)  
-  seAnswerFactory$new(answerID = x[['answer_id']],
-                      accepted = ifelse(x[['accepted']], TRUE, FALSE),
-                      questionID = x[['question_id']],
-                      creationDate = as.POSIXct(x[['creation_date']],
-                        origin='1970-01-01'),
-                      lastActivityDate = as.POSIXct(x[['last_activity_date']],
-                        origin='1970-01-01'),
-                      upVoteCount = x[['up_vote_count']],
-                      downVoteCount = x[['down_vote_count']],
-                      score = x[['score']],
-                      communityOwned = ifelse(x[['community_owned']],
-                        TRUE, FALSE),
-                      title = x[['title']],
-                      body = x[['body']],
-                      site = site, owner=curUser, comments=comments)
+buildAnswers <- function(jsonList, site) {
+  userIDs <- sapply(jsonList, function(x) x[['owner']][['user_id']])
+  users <- getUsers(userIDs, length(userIDs), site)
+  ## users might not necessarily match up with userIDs due to missing values, duplications, etc
+  ## Attach the IDs as the names to the user list, and then pass both into the mapply(),
+  ## this allows us to cycle through the IDs and then match the appropriate user
+  names(users) <- sapply(users, function(x) x$getUserID())
+  mapply(function(json, userID, users, site) {
+   comments <- buildComments(json[['coments']], site)
+   if (userID %in% names(users))
+     curUser <- users[[as.character(userID)]]
+   else
+     curUser <- seUserFactory$new()
+ 
+    seAnswerFactory$new(answerID = json[['answer_id']],
+                        accepted = ifelse(json[['accepted']], TRUE, FALSE),
+                        questionID = json[['question_id']],
+                        creationDate = as.POSIXct(json[['creation_date']],
+                          origin='1970-01-01'),
+                        lastActivityDate = as.POSIXct(json[['last_activity_date']],
+                          origin='1970-01-01'),
+                        upVoteCount = json[['up_vote_count']],
+                        downVoteCount = json[['down_vote_count']],
+                        score = json[['score']],
+                        communityOwned = ifelse(json[['community_owned']],
+                          TRUE, FALSE),
+                        title = json[['title']],
+                        body = json[['body']],
+                        site = site, owner=curUser, comments=comments)   
+  }, jsonList, userIDs, MoreArgs=list(site=site, users=users))
 }
 
           

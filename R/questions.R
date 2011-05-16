@@ -26,12 +26,12 @@ setMethod("show", signature='seQuestion', function(object) {
   print(object$getTitle())
 })
 
-buildQuestion <- function(x, site) {    
-  curUser <- getUsers(x[['owner']][['user_id']], num=1, site=site)
-  if (length(curUser) == 0)
-    curUser <- seUserFactory$new()
-  else
-    curUser <- curUser[[1]]
+buildQuestions <- function(jsonList, site) {
+  userIDs <- sapply(jsonList, function(x) x[['owner']][['user_id']])
+  users <- getUsers(userIDs, length(userIDs), site)
+  names(users) <- sapply(users, function(x) x$getUserID())
+  comments <- buildComments(jsonList[['comments']], site)
+  answers <- buildAnswers(jsonList[['answers']], site)
   comments <- lapply(x[['comments']], buildComment, site)
   answers <- lapply(x[['answers']], buildAnswer, site)
   ## FIXME:  Dont' see a way right now to convert the tags return into

@@ -17,34 +17,28 @@ setMethod("show", signature('seBadge'), function(object) {
 })
 
 allBadges <- function(num=NULL, site='stackoverflow') {
-  badgeBase(paste(getAPIStr(site), 'badges', sep=''), site, num)
+  badgeBase('badges', num, site)
 }
 
 nameBadges <- function(num=NULL, site='stackoverflow') {
-  badgeBase(paste(getAPIStr(site), 'badges/name', sep=''), site, num)
+  badgeBase('badges/name', num, site)
 }
   
 tagBadges <- function(num=NULL, site='stackoverflow') {
-  badgeBase(paste(getAPIStr(site), 'badges/tags', sep=''), site, num)
+  badgeBase('badges/tags', num, site)
 }
 
 badgeRecipients <- function(ids, fromDate=NULL, toDate=NULL, num=NULL,
                             site='stackoverflow') {
   if (length(ids) < 1)
     stop("Must provide at least one badge ID")
-  
-  baseURL <- paste(getAPIStr(site), "badges/",
-                   paste(ids, collapse=";"),
-                   "?pagesize=100", sep='')
-  baseURL <- buildCommonArgs(baseURL, fromDate=fromDate, toDate=toDate)
-  userBase(baseURL, site, num)
+  params <- buildCommonArgs(fromDate=fromDate, toDate=toDate)
+  userBase(ids, params, num, site)
 }
 
-badgeBase <- function(url, site, num=NULL) {
-  jsonList <- doAPICall(url)
-  if ((!is.null(num)) && (length(jsonList) > num))
-    jsonList <- jsonList[1:num]
-  sapply(jsonList$badges, function(x) {
+badgeBase <- function(call, num, site) {
+  jsonList <- seInterfaceObj$request(call, NULL, NULL, NULL, 'badges', num=num, site)
+  sapply(jsonList, function(x) {
     seBadgeFactory$new(badgeID = x[['badge_id']],
                        rank = x[['rank']],
                        name = x[['name']],
