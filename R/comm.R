@@ -54,8 +54,58 @@ setRefClass('seInterface',
                 .self$callQueue <- getRefClass('apiCallQueue')$new()
                 callSuper(...)
               },
+              baseRequest = function(call, vectorized, postVectorized, params, site) {
+                key <- try(getAPIKey(), silent=TRUE)
+                if (!inherits(key, 'try-error'))
+                  params[key] <- key
+                paramStr <- paste(paste(names(params), params, sep='='), collapse='&')
+
+                if (length(vectorized) == 0) {
+                  vectorStrs <- character()
+                } else {
+                  ## FIXME:
+                  ## URLencode() does not encode for hyphens, but StackExchange requires encoded
+                  ## hyphens when it comes to the vectorized inputs, for now, change these ourselves
+                  vectorized <- gsub('-', '%3B', vectorized)
+                  ## long vectorized strings can make overly long URLs, batch these if
+                  ## necessary to keep sane URL lengths
+                  ## The throttling in this regard is apparently aggressive, see:
+                  ## http://stackapps.com/questions/619/url-length-limit-for-for-requests-taking-vectorised-ids-answers-id-question
+                  ## FIXME:
+                  ## For now, I'm going to put this extremely low just to get this working
+                  vectorStrs <- sapply(split(vectorized, ceiling(seq_along(vectorized) / 10)),
+                                       paste, collapse=';')
+                }
+                urls <- paste(getAPIStr(site), '/', call, '/', vectorStrs, '/',
+                              postVectorized, '?', paramStr, sep='')
+                out <- list()
+                for (url in urls) {
+                  ## We need to be careful of throttling here, as 30 calls in 5 seconds will
+                  ## get us blocked.  Being conservative (queue holds only 29 elements and we'll
+                  ## diff on 6 seconds)
+                  .self$callQueue$pushTime()
+                  .self$callQueue$checkQueue()
+                  json <- getURL(url, .opts=list(encoding='identity,gzip'))
+                  curResults <- fromJSON(json)
+                  if ('error' %in% names(curResults)) {
+                    stop("Error ", curResults$error$code, ': ', curResults$error$message)
+                  }
+                  if (!is.null(type))
+                    curResults <- curResults
+                  out <- c(out, curResults)
+                }
+                out
+              },
               request = function(call, vectorized, postVectorized, params, type=NULL, num=NULL,
                 site='stackoverflow') {
+
+              }, 
+
+                request2 = function(call, vectorized, postVectorized, params, type=NULL, num=NULL,
+                site='stackoverflow') {
+                  results <- .self$baseRequest(call, vectorized, postVectorized, params, site)
+                  
+                  
                 key <- try(getAPIKey(), silent=TRUE)
                 if (!inherits(key, 'try-error'))
                   params[key] <- key
