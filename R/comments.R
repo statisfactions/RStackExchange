@@ -54,8 +54,7 @@ buildComments <- function(jsonList, site) {
     else
       curUser <- seUserFactory$new()
     seCommentFactory$new(commentID = json[['comment_id']],
-                         creationDate = as.POSIXct(json[['creation_date']],
-                           origin='1970-01-01'),
+                         creationDate = convertDate(json[['creation_date']]),
                          postID = json[['post_id']],
                          postType = json[['post_type']],
                          score = json[['score']],

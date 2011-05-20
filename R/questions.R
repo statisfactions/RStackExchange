@@ -30,96 +30,88 @@ buildQuestions <- function(jsonList, site) {
   userIDs <- sapply(jsonList, function(x) x[['owner']][['user_id']])
   users <- getUsers(userIDs, length(userIDs), site)
   names(users) <- sapply(users, function(x) x$getUserID())
-  comments <- buildComments(jsonList[['comments']], site)
-  answers <- buildAnswers(jsonList[['answers']], site)
-  comments <- lapply(x[['comments']], buildComment, site)
-  answers <- lapply(x[['answers']], buildAnswer, site)
-  ## FIXME:  Dont' see a way right now to convert the tags return into
-  ## seTag objects
-  seQuestionFactory$new(questionID= x[['question_id']],
-                        creationDate = as.POSIXct(x[['creation_date']],
-                          origin='1970-01-01'),
-                        lastActivityDate = as.POSIXct(x[['last_activity_date']],
-                          origin='1970-01-01'),
-                        upVoteCount = x[['up_vote_count']],
-                        downVoteCount = x[['down_vote_count']],
-                        favoriteCount = x[['favorite_count']],
-                        answerCount = x[['answer_count']],
-                        viewCount = x[['view_count']],
-                        score = x[['score']],
-                        communityOwned = ifelse(x[['community_owned']],
-                          TRUE, FALSE),
-                        title = x[['title']],
-                        site = site, owner=curUser, comments=comments,
-                        tags = as.list(x[['tags']]),
-                        answers = answers,
-                        site = site)
+
+  mapply(function(json, userID, users, site) {
+    comments <- buildComments(jsonList[['comments']], site)
+    answers <- buildAnswers(jsonList[['answers']], site)
+    if (userID %in% names(users))
+     curUser <- users[[as.character(userID)]]
+   else
+     curUser <- seUserFactory$new()
+
+    ## FIXME:  Dont' see a way right now to convert the tags return into
+    ## seTag objects
+    seQuestionFactory$new(questionID= json[['question_id']],
+                          creationDate = convertDate(json[['creation_date']]),
+                          lastActivityDate = convertDate(json[['last_activity_date']]),
+                          upVoteCount = json[['up_vote_count']],
+                          downVoteCount = json[['down_vote_count']],
+                          favoriteCount = json[['favorite_count']],
+                          answerCount = json[['answer_count']],
+                          viewCount = json[['view_count']],
+                          score = json[['score']],
+                          communityOwned = ifelse(json[['community_owned']],
+                            TRUE, FALSE),
+                          title = json[['title']],
+                          site = site, owner=curUser, comments=comments,
+                          tags = as.list(json[['tags']]),
+                          answers = answers,
+                          site = site)
+  }, jsonList, userIDs, MoreArgs=list(site=site, users=users))
 }
 
 getQuestions <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
                          min=NULL, max=NULL, sort=NULL, order=NULL,
                          tagged=NULL, site='stackoverflow') {
-  jsonList <- questionBase(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
-                           min=min, max=max, sort=sort, order=order,
-                           tagged=tagged)
-  sapply(jsonList, buildQuestion, site)
+  questionBase(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
+               min=min, max=max, sort=sort, order=order, tagged=tagged)
 }
 
 getUnansweredQuestions <- function(num=NULL, fromDate=NULL, toDate=NULL,
                                    min=NULL, max=NULL, sort=NULL, order=NULL,
                                    tagged=NULL, site='stackoverflow') {
-  jsonList <- questionBase(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
-                           min=min, max=max, sort=sort, order=order,
-                           urlExtras='/unanswered', site=site, tagged=tagged)
-  sapply(jsonList, buildQuestion, site)
+  questionBase(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
+               min=min, max=max, sort=sort, order=order,
+               postVex='unanswered', site=site, tagged=tagged)
 }
 
 getNoAnswerQuestions <- function(num=NULL, fromDate=NULL, toDate=NULL,
                                  min=NULL, max=NULL, sort=NULL, order=NULL,
                                  tagged=NULL, site='stackoverflow') {
-  jsonList <- questionBase(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
-                           min=min, max=max, sort=sort, order=order,
-                           urlExtras='/no-answers', site=site, tagged=tagged)
-  sapply(jsonList, buildQuestion, site)
+  questionBase(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
+               min=min, max=max, sort=sort, order=order,
+               postVex='no-answers', site=site, tagged=tagged)
 }
 
 getQuestionLinks <- function(num=NULL, ids=NULL, fromDate=NULL,
                              toDate=NULL, min=NULL, max=NULL, sort=NULL,
                              order=NULL, site='stackoverflow') { 
-  jsonList <- questionBase(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
-                           min=min, max=max, sort=sort, order=order,
-                           urlExtras='/linked', site=site)
-  sapply(jsonList, buildQuestion, site)
+  questionBase(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
+               min=min, max=max, sort=sort, order=order, postVex='linked',
+               site=site)
 }
 
 getQuestionRelated <- function(num=NULL, ids=NULL, fromDate=NULL,
                                toDate=NULL, min=NULL, max=NULL, sort=NULL,
                                order=NULL, site='stackoverflow') {
-  jsonList <- questionBase(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
+  questionBase(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
                            min=min, max=max, sort=sort, order=order, site=site,
-                           urlExtras='/related')
-  sapply(jsonList, buildQuestion, site)
+                           postVex='related')
 }
 
 ## FIXME:  Skipping timeline for now
 
 questionBase <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
                          min=NULL, max=NULL, sort=NULL, order=NULL,
-                         tagged=NULL, site='stackoverflow', urlExtras='',
-                         field='questions') {
-  if (is.null(ids))
-    idStr <- ''
-  else
-    idStr <- paste(paste(ids, collapse=';'), '/', sep='')
-  
-  baseURL <- paste(getAPIStr(site), '/questions', idStr, urlExtras,
-                   '?pagesize=100&body=true&comments=true&answers=true',
-                   sep='')
-  baseURL <- buildCommonArgs(baseURL, NULL, min, max, sort, order,
-                             fromDate, toDate)
+                         tagged=NULL, site='stackoverflow', postVex=NULL) {
+  params <- buildCommonArgs(fromDate=fromDate, toDate=toDate, min=min,
+                            max=max, sort=sort, order=order)
   if (!is.null(tagged))
-    baseURL <- paste(baseURL, '&tagged=', paste(tagged, collapse=';'), sep='')
-  doTotalList(baseURL, field, num)
+    params[['tagged']] <- paste(tagged, collapse=';')
+  params[['body']] <- params[['answers']] <- 'true'
+  jsonList <- seInterfaceObj$request('questions', ids, postVex, params,
+                                     'questions', num=num, site=site)
+  buildQuestions(jsonList, site)
 }
 
           

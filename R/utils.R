@@ -2,6 +2,11 @@ getAPIStr <- function(site='stackoverflow') {
   paste('http://api.', site, '.com/1.1/', sep='')
 }
 
+convertDate <- function(stackDate) {
+  ## converts a date from stackexchange format to POSIXct
+  as.POSIXct(stackDate, origin='1970-01-01')
+}
+
 buildCommonArgs <- function(filter=NULL, min=NULL,
                             max=NULL, sort=NULL, order=NULL,
                             fromDate=NULL, toDate=NULL) {
