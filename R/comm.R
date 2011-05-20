@@ -71,7 +71,7 @@ setRefClass('seInterface',
                 type=NULL, num=NULL, site='stackoverflow') {
                 if (!is.null(num) && (num < 0))
                   stop("num argument must be a positive value")
-                
+
                 params[['pagesize']] <- 100
                 key <- try(getAPIKey(), silent=TRUE)
                 if (!inherits(key, 'try-error'))
@@ -82,6 +82,8 @@ setRefClass('seInterface',
                 if (length(vectorized) == 0) {
                   vectorStrs <- character()
                 } else {
+                  if ((is.null(num)) ||
+                      (num > length(vectorized)))
                   ## FIXME:
                   ## URLencode() does not encode for hyphens, but
                   ## StackExchange requires encoded
