@@ -57,7 +57,7 @@ buildAnswers <- function(jsonList, site) {
     seAnswerFactory$new(answerID = json[['answer_id']],
                         accepted = ifelse(json[['accepted']], TRUE, FALSE),
                         questionID = json[['question_id']],
-                        creationDate = convertDate(json[['creation_date']])
+                        creationDate = convertDate(json[['creation_date']]),
                         lastActivityDate = convertDate(json[['last_activity_date']]),
                         upVoteCount = json[['up_vote_count']],
                         downVoteCount = json[['down_vote_count']],

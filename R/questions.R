@@ -32,8 +32,8 @@ buildQuestions <- function(jsonList, site) {
   names(users) <- sapply(users, function(x) x$getUserID())
 
   mapply(function(json, userID, users, site) {
-    comments <- buildComments(jsonList[['comments']], site)
-    answers <- buildAnswers(jsonList[['answers']], site)
+    comments <- buildComments(json[['comments']], site)
+    answers <- buildAnswers(json[['answers']], site)
     if (userID %in% names(users))
      curUser <- users[[as.character(userID)]]
    else
