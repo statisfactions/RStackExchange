@@ -49,14 +49,16 @@ getUsers <- function(ids, num=NULL, site='stackoverflow') {
 searchUsers <- function(num=NULL, filter=NULL, fromDate=NULL, toDate=NULL,
                         min=NULL, max=NULL, sort=NULL, order=NULL,
                         site='stackoverflow') {
-  params <- buildCommonArgs(filter=filter, fromDate=fromDate, toDate=toDate, min=min,
+  params <- buildCommonArgs(filter=filter, fromDate=fromDate, toDate=toDate,
+                            min=min,
                            max=max, sort=sort, order=order)
   userBase(NULL, params, num, site)
 }
 
 userBase <- function(ids, params, num, site) {
   params[['pagesize']] <- 100
-  jsonList <- doTotalList('users', ids, NULL, params, 'users', num, site)
+  jsonList <- seInterfaceObj$request('users', ids, NULL, params, 'users',
+                                     num=num, site=site)
   sapply(jsonList, buildUser, site)
 }
 

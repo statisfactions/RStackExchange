@@ -31,18 +31,21 @@ setMethod("show", signature="seAnswer", function(object) {
 getAnswers <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
                        min=NULL, max=NULL, sort=NULL, order=NULL,
                        site='stackoverflow') {
-  params <- buildCommonArgs(fromDate=fromDate, toDate=toDate, min=min, max=max, sort=sort,
-                           order=order)
-  jsonList <- doTotalList('answers', ids, NULL, params, 'answers', num=num, site=site)
+  params <- buildCommonArgs(fromDate=fromDate, toDate=toDate, min=min,
+                            max=max, sort=sort, order=order)
+  jsonList <- seInterfaceObj$request('answers', ids, NULL, params,
+                                     'answers', num=num, site=site)
   buildAnswers(jsonList, site)
 }
 
 buildAnswers <- function(jsonList, site) {
   userIDs <- sapply(jsonList, function(x) x[['owner']][['user_id']])
   users <- getUsers(userIDs, length(userIDs), site)
-  ## users might not necessarily match up with userIDs due to missing values, duplications, etc
-  ## Attach the IDs as the names to the user list, and then pass both into the mapply(),
-  ## this allows us to cycle through the IDs and then match the appropriate user
+  ## users might not necessarily match up with userIDs due to missing values,
+  ## duplications, etc
+  ## Attach the IDs as the names to the user list, and then pass both into
+  ## the mapply(), this allows us to cycle through the IDs and then match
+  ## the appropriate user
   names(users) <- sapply(users, function(x) x$getUserID())
   mapply(function(json, userID, users, site) {
    comments <- buildComments(json[['coments']], site)

@@ -35,9 +35,10 @@ setMethod('show', signature('seTag'), function(object) {
 getTags <- function(num=NULL, filter=NULL, fromDate=NULL, toDate=NULL,
                        min=NULL, max=NULL, sort=NULL, order=NULL,
                     site='stackoverflow') {
-  params <- buildCommonArgs(filter=filter, fromDate=fromDate, toDate=toDate, min=min,
-                            max=max, sort=sort, order=order)
-  jsonList <- doTotalList('tags', NULL, NULL, params, 'tag', num, site)
+  params <- buildCommonArgs(filter=filter, fromDate=fromDate, toDate=toDate,
+                            min=min, max=max, sort=sort, order=order)
+  seInterfaceObj$request('tags', NULL, NULL, params, 'tag', num=num,
+                         site=site)
   sapply(jsonList, function(x) {
     seTagFactory$new(name = x[['name']],
                      count = x[['count']],
