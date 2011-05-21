@@ -63,7 +63,7 @@ buildQuestions <- function(jsonList, site) {
 getQuestions <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
                          min=NULL, max=NULL, sort=NULL, order=NULL,
                          tagged=NULL, site='stackoverflow') {
-  questionBase(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
+  questionBase(num=num, ids=ids, fromDate=fromDate, toDate=toDate,
                min=min, max=max, sort=sort, order=order, tagged=tagged)
 }
 
@@ -86,7 +86,7 @@ getNoAnswerQuestions <- function(num=NULL, fromDate=NULL, toDate=NULL,
 getQuestionLinks <- function(num=NULL, ids=NULL, fromDate=NULL,
                              toDate=NULL, min=NULL, max=NULL, sort=NULL,
                              order=NULL, site='stackoverflow') { 
-  questionBase(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
+  questionBase(num=num, ids=ids, fromDate=fromDate, toDate=toDate,
                min=min, max=max, sort=sort, order=order, postVex='linked',
                site=site)
 }
@@ -94,7 +94,7 @@ getQuestionLinks <- function(num=NULL, ids=NULL, fromDate=NULL,
 getQuestionRelated <- function(num=NULL, ids=NULL, fromDate=NULL,
                                toDate=NULL, min=NULL, max=NULL, sort=NULL,
                                order=NULL, site='stackoverflow') {
-  questionBase(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
+  questionBase(num=num, ids=ids, fromDate=fromDate, toDate=toDate,
                            min=min, max=max, sort=sort, order=order, site=site,
                            postVex='related')
 }
