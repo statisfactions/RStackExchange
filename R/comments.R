@@ -33,7 +33,7 @@ getComments <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
     call <- 'comments'
     postVec <- NULL
   }
-  jsonList <- seInterfaceObj$request(calls, ids, postVec, params, 'comments',
+  jsonList <- seInterfaceObj$request(call, ids, postVec, params, 'comments',
                                      num=num, site=site)
   buildComments(jsonList, site)
 }

@@ -85,7 +85,10 @@ getNoAnswerQuestions <- function(num=NULL, fromDate=NULL, toDate=NULL,
 
 getQuestionLinks <- function(num=NULL, ids=NULL, fromDate=NULL,
                              toDate=NULL, min=NULL, max=NULL, sort=NULL,
-                             order=NULL, site='stackoverflow') { 
+                             order=NULL, site='stackoverflow') {
+  if (is.null(ids))
+    stop("getQuestionLinks requres at least one id")
+  
   questionBase(num=num, ids=ids, fromDate=fromDate, toDate=toDate,
                min=min, max=max, sort=sort, order=order, postVex='linked',
                site=site)
@@ -94,6 +97,9 @@ getQuestionLinks <- function(num=NULL, ids=NULL, fromDate=NULL,
 getQuestionRelated <- function(num=NULL, ids=NULL, fromDate=NULL,
                                toDate=NULL, min=NULL, max=NULL, sort=NULL,
                                order=NULL, site='stackoverflow') {
+  if (is.null(ids))
+    stop("getQuestionRelated requires at least one ID")
+  
   questionBase(num=num, ids=ids, fromDate=fromDate, toDate=toDate,
                            min=min, max=max, sort=sort, order=order, site=site,
                            postVex='related')

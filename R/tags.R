@@ -3,7 +3,7 @@
 getTop <- function(obj, type, period) {
   if (! period %in% c('month', 'all-time'))
     stop("period parameter must be 'month' or 'all-time'")
-  call <- paste(tags, obj$getName(), type, period, sep='/')
+  call <- paste('tags', obj$getName(), type, period, sep='/')
   json <- seInterfaceObj$request(call, NULL, NULL, NULL, type='top_users',
                                  site=obj$getSite())
   sapply(json, buildUser, obj$getSite())
@@ -37,8 +37,8 @@ getTags <- function(num=NULL, filter=NULL, fromDate=NULL, toDate=NULL,
                     site='stackoverflow') {
   params <- buildCommonArgs(filter=filter, fromDate=fromDate, toDate=toDate,
                             min=min, max=max, sort=sort, order=order)
-  seInterfaceObj$request('tags', NULL, NULL, params, 'tag', num=num,
-                         site=site)
+  jsonList <- seInterfaceObj$request('tags', NULL, NULL, params, 'tag', num=num,
+                                     site=site)
   sapply(jsonList, function(x) {
     seTagFactory$new(name = x[['name']],
                      count = x[['count']],
