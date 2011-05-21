@@ -62,7 +62,7 @@ Jeff Gentry
 \code{\link{getUsers}}, \code{\link{searchUsers}}, \code{\link{setRefClass}}
 }
 \examples{
-   zz <- searchUsers(num=25, filter='foo')
+   zz <- searchUsers(num=5, filter='foo')
    zz[[2]]$topTagsByAnswer()
 }
 \keyword{classes}

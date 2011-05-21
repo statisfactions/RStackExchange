@@ -50,7 +50,7 @@ Jeff Gentry
   \code{\link{getTags}}, \code{\link{getTagSynonyms}}, \code{setRefClass}
 }
 \examples{
-   tags <- getTags(num=25)
-   tags[[23]]$topAskers('all-time')
+   tags <- getTags(num=5)
+   tags[[2]]$topAskers('all-time')
 }
 \keyword{classes}

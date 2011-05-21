@@ -36,7 +36,7 @@ Jeff Gentry
 \code{\link{getPrivileges}}, \code{\link{setRefClass}}
 }
 \examples{
-   zz <- getPrivileges(25)
+   zz <- getPrivileges(5)
    sapply(zz, function(x) x$getDescription())
 }
 \keyword{classes}

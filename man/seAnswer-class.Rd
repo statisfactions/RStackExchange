@@ -50,6 +50,6 @@
 \author{Jeff Gentry}
 \seealso{\code{\link{getAnswers}}, \code{\link{setRefClass}}}
 \examples{
-   zz <- getAnswers(num=25)
+   zz <- getAnswers(num=2)
    bodies <- sapply(zz, function(x) x$getBody())
 }

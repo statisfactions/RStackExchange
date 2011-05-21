@@ -6,7 +6,9 @@ getTop <- function(obj, type, period) {
   call <- paste('tags', obj$getName(), type, period, sep='/')
   json <- seInterfaceObj$request(call, NULL, NULL, NULL, type='top_users',
                                  site=obj$getSite())
-  sapply(json, buildUser, obj$getSite())
+  ## These are partial user objects, get the IDs and retrieve the full ones
+  ids <- sapply(json, function(x) x[['user']][['user_id']])
+  getUsers(ids=ids)
 }
 
 setRefClass("seTag",
@@ -37,7 +39,7 @@ getTags <- function(num=NULL, filter=NULL, fromDate=NULL, toDate=NULL,
                     site='stackoverflow') {
   params <- buildCommonArgs(filter=filter, fromDate=fromDate, toDate=toDate,
                             min=min, max=max, sort=sort, order=order)
-  jsonList <- seInterfaceObj$request('tags', NULL, NULL, params, 'tag', num=num,
+  jsonList <- seInterfaceObj$request('tags', NULL, NULL, params, 'tags', num=num,
                                      site=site)
   sapply(jsonList, function(x) {
     seTagFactory$new(name = x[['name']],

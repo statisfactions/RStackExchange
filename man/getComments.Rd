@@ -38,7 +38,7 @@ getComments(num = NULL, ids = NULL, fromDate = NULL, toDate = NULL,
   \code{\link{seComment}}
 }
 \examples{
-     zz <- getComments(num=25, fromDate=as.POSIXct('2009-09-25'),
+     zz <- getComments(num=5, fromDate=as.POSIXct('2009-09-25'),
                        toDate=as.POSIXct('2010-05-30'))
 }
 \keyword{interface}

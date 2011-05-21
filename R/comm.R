@@ -34,8 +34,8 @@ setRefClass('apiCallQueue',
               checkQueue = function() {
                 if (!is.na(.self$calls[[.self$maxCallsPerPeriod]])) {
                   ## Block until enough time has passed
-                  while (as.numeric(.self$calls[[1]] -
-                                    .self$calls[[.self$maxCallsPerPeriod]]) >
+                  while (as.numeric(Sys.time() -
+                                    .self$calls[[.self$maxCallsPerPeriod]]) <
                          .self$periodLength) {
                     TRUE
                   }
@@ -75,7 +75,7 @@ setRefClass('seInterface',
                 params[['pagesize']] <- 100
                 key <- try(getAPIKey(), silent=TRUE)
                 if (!inherits(key, 'try-error'))
-                  params[key] <- key
+                  params['key'] <- key
                 paramStr <- paste(paste(names(params), params, sep='='),
                                   collapse='&')
                 
@@ -111,9 +111,11 @@ setRefClass('seInterface',
                       stop("Error ", curResults$error$code, ': ',
                            curResults$error$message)
                     }
-                    out <- c(out, curResults[[type]])
+                    curTypeResults <- curResults[[type]]
+                    out <- c(out, curTypeResults)
                     if (((!is.null(num))&&(length(out) >= num)) ||
-                        (length(out) == curResults$total))
+                        (is.null(curResults$total)) ||
+                        (length(curTypeResults) == curResults$total))
                       break
                   }
                 }

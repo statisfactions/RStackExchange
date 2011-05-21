@@ -70,6 +70,12 @@ getQuestions <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
 getUnansweredQuestions <- function(num=NULL, fromDate=NULL, toDate=NULL,
                                    min=NULL, max=NULL, sort=NULL, order=NULL,
                                    tagged=NULL, site='stackoverflow') {
+  ## FIXME:  Dox list 'sort' as a possible argument, but it looks like it doesn't work.
+  ## need to investigate this further
+  if (!is.null(sort)) {
+    sort <- NULL
+    warning("Sort argument is temporarily disabled for getUnasweredQuestions")
+  }
   questionBase(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
                min=min, max=max, sort=sort, order=order,
                postVex='unanswered', site=site, tagged=tagged)

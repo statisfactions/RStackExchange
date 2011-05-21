@@ -39,7 +39,7 @@ Jeff Gentry
 \code{\link{getComments}}, \code{\link{getRefClass}}
 }
 \examples{
-   zz <- getComments(num=25)
+   zz <- getComments(num=5)
    sapply(zz, function(x) x$body)
 }
 \keyword{classes}

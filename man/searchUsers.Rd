@@ -37,6 +37,6 @@ getUsers(ids, num=NULL, site='stackoverflow')
 \author{Jeff Gentry}
 \seealso{\code{\link{seUser}}}
 \examples{
-   zz <- searchUsers(filter='geoff', num=25)
+   zz <- searchUsers(filter='geoff', num=5)
 }
 \keyword{interface}

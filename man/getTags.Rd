@@ -51,7 +51,7 @@ getTagSynonyms(num = NULL, tags = NULL, fromDate = NULL, toDate = NULL,
   \code{\link{seTag}}
 }
 \examples{
-    zz <- getTags(filter='java', num=25)
+    zz <- getTags(filter='java', num=5)
     tags <- sapply(zz, function(x) x$getName())
     xx <- getTagSynonyms(num=3, tags=tags, order='desc')
 }

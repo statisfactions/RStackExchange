@@ -41,6 +41,6 @@ http://api.stackoverflow.com/1.1/usage/methods/search
   \code{\link{seQuestion}}
 }
 \examples{
-    zz <- searchStackSite(num=25, tagged='r', sort='votes')
+    zz <- searchStackSite(num=5, tagged='r', sort='votes')
 }
 \keyword{interface}

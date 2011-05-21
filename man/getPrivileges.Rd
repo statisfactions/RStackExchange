@@ -20,6 +20,6 @@ getPrivileges(num = NULL, site = "stackoverflow")
   \code{\link{sePrivilege}}
 }
 \examples{
-  zz <- getPrivileges(num=25)
+  zz <- getPrivileges(num=5)
 }
 \keyword{interface}

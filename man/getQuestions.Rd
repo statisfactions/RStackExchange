@@ -58,12 +58,12 @@ Jeff Gentry
 \code{\link{seQuestion}}
 }
 \examples{
-   zz <- getQuestions(num=5, fromDate=as.POSIXct('2009-09-25'), toDate=as.POSIXct('2010-05-30'))
+   zz <- getQuestions(num=2, fromDate=as.POSIXct('2009-09-25'), toDate=as.POSIXct('2010-05-30'))
    ids <- sapply(zz, function(x) x$getQuestionID())
    getQuestionRelated(num=3, ids=ids)
 
    xx <- getNoAnswerQuestions(num=3)
-   yy <- getUnansweredQuestions(num=2, sort='views')
+   yy <- getUnansweredQuestions(num=2)
    getQuestionLinks(ids=sapply(yy, function(x) x$getQuestionID()))
  }
 \keyword{interface}

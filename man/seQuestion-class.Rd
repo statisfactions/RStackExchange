@@ -54,7 +54,7 @@ Jeff Gentry
   \code{\link{getQuestionRelated}}, \code{\link{setRefClass}}
 }
 \examples{
-   zz <- getQuestions(num=25)
+   zz <- getQuestions(num=5)
    sapply(zz, function(x) x$getScore())
 }
 \keyword{classes}

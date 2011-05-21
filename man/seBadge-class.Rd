@@ -39,7 +39,7 @@ Jeff Gentry
   \code{\link{setRefClass}}
 }
 \examples{
-  zz <- allBadges(num=25)
+  zz <- allBadges(num=5)
   sapply(zz, function(x) x$getDescription())
 }
 \keyword{classes}
