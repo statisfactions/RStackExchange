@@ -1,0 +1,29 @@
+\documentclass[letter]{article}
+%\VignetteIndexEntry{StackExchange client for R}
+%\VignettePackage{RStackExchange}
+%\VignetteKeywords{Documentation}
+\usepackage{url}
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+\newcommand{\Rmethod}[1]{{\texttt{#1}}}
+\newcommand{\Rfunarg}[1]{{\texttt{#1}}}
+\newcommand{\Rclass}[1]{{\textit{#1}}}
+
+\begin{document}
+
+\title{StackExchange client for R}
+\author{Jeff Gentry}
+\maketitle
+
+\section{Disclaimer}
+
+This package is still very much a work in progress, and one will find that the piles of dust in the corners
+are quite high, and that the roughness of the edges are very noticeable.  However, the functionality is working for some 
+definition of the term, and I thought it might be useful for other people than sitting in my code repository waiting for me to finish it up.
+
+\section{Introduction}
+
+The StackExchange web site family is an extremely rapidly growing collection of question and answer websites.  The earliest examples focused on software development, system administration and the like but now topics are very far ranging.  The way they work is that people can vote questions up or down based on how good of a question they think it is, as well as the answers given.  If one believes in the wisdom of the crowds, this should lead to the best answers to the best questions floating to the top.
+
+\section{API Keys}
