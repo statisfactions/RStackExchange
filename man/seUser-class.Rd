@@ -63,6 +63,6 @@ Jeff Gentry
 }
 \examples{
    zz <- searchUsers(num=5, filter='foo')
-   zz[[2]]$topTagsByAnswer()
+   zz[[2]]$topTagsByAnswers()
 }
 \keyword{classes}

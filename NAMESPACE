@@ -1,5 +1,5 @@
 exportClasses('seAnswer', 'seBadge', 'seComment', 'sePrivilege',
-              'seQuestion', 'seTag', 'seUser')
+              'seQuestion', 'seTag', 'seTopTag', 'seUser')
 exportMethods('show')
 
 export('getAnswers')

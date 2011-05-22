@@ -34,6 +34,37 @@ setMethod('show', signature('seTag'), function(object) {
   print(object$getName())
 })
 
+setRefClass('seTopTag',
+            contains='seTag',
+            fields = list(
+              questionScore = 'numeric',
+              questionCount = 'numeric',
+              answerScore = 'numeric',
+              answerCount = 'numeric',
+              user = 'seUser'),
+            methods = list(
+              initialize = function(...) {
+                callSuper(...)
+              })
+            )
+seTopTagFactory <- getRefClass('seTopTag')
+seTopTagFactory$accessors(names(seTopTagFactory$fields()))
+
+setMethod('show', signature('seTag'), function(object) {
+  print(object$getName())
+})
+
+buildTopTags <- function(jsonList, user, site='stackoverflow') {
+  sapply(jsonList, function(x) {
+    seTopTagFactory$new(name = x[['tag_name']],
+                        questionScore = x[['question_score']],
+                        questionCount = x[['question_count']],
+                        answerScore = x[['answer_score']],
+                        answerCount = x[['answer_count']],
+                        user = user)
+  })
+}
+
 getTags <- function(num=NULL, filter=NULL, fromDate=NULL, toDate=NULL,
                        min=NULL, max=NULL, sort=NULL, order=NULL,
                     site='stackoverflow') {

@@ -37,6 +37,7 @@ setRefClass('apiCallQueue',
                   while (as.numeric(Sys.time() -
                                     .self$calls[[.self$maxCallsPerPeriod]]) <
                          .self$periodLength) {
+                    print("throttling")
                     TRUE
                   }
                 }
@@ -46,9 +47,21 @@ setRefClass('apiCallQueue',
             )
 
 vectorizeArgs <- function(args) {
-    ## long vectorized strings can make overly long URLs,
+  ## NULL values are no good, remove those.  
+  nulls <- which(sapply(args, is.null))
+  if (length(nulls) > 0)
+    args <- args[-nulls]
+
+  ## FIXME:
+  ## URLencode() does not encode for hyphens, but
+  ## StackExchange requires encoded
+  ## hyphens when it comes to the vectorized inputs, for now,
+  ## change these ourselves
+  args <- gsub('-', '%3B', args)
+ 
+  ## long vectorized strings can make overly long URLs,
     ## batch these if necessary to keep sane URL lengths
-    ## The throttling in this regard is apparently aggressive,
+  ## The throttling in this regard is apparently aggressive,
     ## see:
     ## http://stackapps.com/questions/619/url-length-limit-for-for-requests-taking-vectorised-ids-answers-id-question
     ## FIXME:
@@ -78,18 +91,13 @@ setRefClass('seInterface',
                   params['key'] <- key
                 paramStr <- paste(paste(names(params), params, sep='='),
                                   collapse='&')
-                
                 if (length(vectorized) == 0) {
                   vectorStrs <- character()
                 } else {
                   if ((is.null(num)) ||
-                      (num > length(vectorized)))
-                  ## FIXME:
-                  ## URLencode() does not encode for hyphens, but
-                  ## StackExchange requires encoded
-                  ## hyphens when it comes to the vectorized inputs, for now,
-                  ## change these ourselves
-                  vectorized <- gsub('-', '%3B', vectorized)
+                      (num > length(vectorized))) {
+                    num <-  length(vectorized)
+                  }
                   vectorStrs <- vectorizeArgs(vectorized)
                 }
                 urls <- paste(getAPIStr(site), '/', call, '/', vectorStrs, '/',

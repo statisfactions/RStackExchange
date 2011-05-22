@@ -18,17 +18,27 @@ setRefClass("seUser",
               bronzeBadges = 'numeric',
               site = 'character'),
             methods = list(
-              topAnswersByTags = function(tags) {
-
+              topAnswersByTags = function(tags, num=NULL) {
+                call <- paste('users', .self$userID, 'tags', sep='/')
+                json <- seInterfaceObj$request(call, tags, 'top-answers', NULL, 'answers', num=num,
+                                               site=.self$site)
+                buildAnswers(json, site=.self$site)
               },
-              topQuestionsByTags = function(tags) {
-
+              topQuestionsByTags = function(tags, num=NULL) {
+                call <- paste('users', .self$userID, 'tags', sep='/')
+                json <- seInterfaceObj$request(call, tags, 'top-questions', NULL, 'questions', num=num,
+                                               site=.self$site)
+                buildQuestions(json, site=.self$site)
               },
-              topTagsByAnswers = function() {
-
+              topTagsByAnswers = function(num=NULL) {
+                call <- paste('users', .self$userID, 'top-answer-tags', sep='/')
+                json <- seInterfaceObj$request(call, NULL, NULL, NULL, 'top_tags', num=num, site=.self$site)
+                buildTopTags(json, .self, site=.self$site)
               },
-              topTagsByQuestions = function() {
-
+              topTagsByQuestions = function(num=NULL) {
+                call <- paste('users', .self$userID, 'top-question-tags', sep='/')
+                json <- seInterfaceObj$request(call, NULL, NULL, NULL, 'top_tags', num=num, site=.self$site)
+                buildTopTags(json, .self, site=.self$site)
               }
               ),
             )
@@ -56,7 +66,6 @@ searchUsers <- function(num=NULL, filter=NULL, fromDate=NULL, toDate=NULL,
 }
 
 userBase <- function(ids, params, num, site) {
-  params[['pagesize']] <- 100
   jsonList <- seInterfaceObj$request('users', ids, NULL, params, 'users',
                                      num=num, site=site)
   sapply(jsonList, buildUser, site)

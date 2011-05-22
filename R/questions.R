@@ -34,11 +34,11 @@ buildQuestions <- function(jsonList, site) {
   mapply(function(json, userID, users, site) {
     comments <- buildComments(json[['comments']], site)
     answers <- buildAnswers(json[['answers']], site)
-    if (userID %in% names(users))
-     curUser <- users[[as.character(userID)]]
-   else
-     curUser <- seUserFactory$new()
-
+    if ((!is.null(userID)) && (userID %in% names(users))) {
+      curUser <- users[[as.character(userID)]]
+    } else {
+      curUser <- seUserFactory$new()
+    }
     ## FIXME:  Dont' see a way right now to convert the tags return into
     ## seTag objects
     seQuestionFactory$new(questionID= json[['question_id']],
