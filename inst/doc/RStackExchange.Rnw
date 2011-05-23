@@ -16,14 +16,115 @@
 \author{Jeff Gentry}
 \maketitle
 
-\section{Disclaimer}
-
-This package is still very much a work in progress, and one will find that the piles of dust in the corners
-are quite high, and that the roughness of the edges are very noticeable.  However, the functionality is working for some 
-definition of the term, and I thought it might be useful for other people than sitting in my code repository waiting for me to finish it up.
-
 \section{Introduction}
 
-The StackExchange web site family is an extremely rapidly growing collection of question and answer websites.  The earliest examples focused on software development, system administration and the like but now topics are very far ranging.  The way they work is that people can vote questions up or down based on how good of a question they think it is, as well as the answers given.  If one believes in the wisdom of the crowds, this should lead to the best answers to the best questions floating to the top.
+The StackExchange web site family is an extremely rapidly growing collection 
+of question and answer websites.  The earliest examples focused on software 
+development, system administration and the like but now topics are very far 
+ranging.  The way they work is that people can vote questions up or down 
+based on how good of a question they think it is, as well as the answers 
+given.  If one believes in the wisdom of the crowds, this should lead to the 
+best answers to the best questions floating to the top. 
+
+\section{Initial Notes}
+
+\subsection{Notes for this version}
+This package is still very much a work in progress, and one will find that 
+the piles of dust in the corners are quite high, and that the roughness of 
+the edges are very noticeable.  However, the functionality is working for some 
+definition of the term, and I thought it might be useful for other people 
+than sitting in my code repository waiting for me to finish it up.
+
+\subsection{Notes on API coverage}
+
+The ultimate goal is to provide full coverage of the StackExchange API, 
+although this is not currently the case.  Aspects of the API will be added 
+over time, although if there are particular places that you find missing,
+please contact me.
+
+\subsection{Notes for this document}
+
+This document is just attempting to point you in the right direction, and
+is not providing an encyclopedic overview of the \Rpackage{RStackExchange}
+package nor the StackExchange API.  Refer to the individual man pages for
+the package to see a complete overview of functionality.
+
+\section{Managing multiple StackExchange sites}
+
+Any valid StackExchange site will work with this package.  All functions take
+a \Rfunarg{site} argument, which defaults to \Robject{stackoverflow.com}. 
+You may override this default by supplying the domain
+name (NOT the full URL) for the StackExchange site that you wish to use.
+
+A complete list of StackExchange sites is available at 
+\url{http://stackexchange.com/sites}.
+
+\section{You've got questions?  We've got answers}
+
+There are multiple methods for searching questions.  To explain the upcoming 
+nomenclature, consider the following definitions.  An {\em unanswered} 
+question is one where there are no answers provided which have been upvoted.
+Contrast that with a {\em no answer} question, which literally has no 
+answers provided.  One can also look for {\em related} questions, which
+use a private algorithm to identify similar questions as well as 
+{\em linked} questions which are questions which have been linked to
+in other questions.
+
+<<questions>>=
+   allQs <- getQuestions(tagged='r', fromDate=as.POSIXct('2010-10-01'),
+                         toDate=as.POSIXct('2011-01-01'), num=5)
+
+   noAQs <- getQuestions(tagged='r', fromDate=as.POSIXct('2010-10-01'),
+                         toDate=as.POSIXct('2011-01-01'), num=5)
+@ 
+
+These questions are all instances of the \Rclass{seQuestion} class,
+which provides the \Rclass{answers} field already included.  We can
+see the number of answers each provides:
+
+<<answers>>=
+  aQAnswers <- allQs$getAnswers()
+  nAQAnswers <- noAQs$getAnswers()
+ 
+  length(aQAnswers)
+  length(nAQAnswers)
+@ 
+
+One can also see the comments for either a question or an answer:
+
+<<comments>>=
+  allQs$getComments()
+  aQAnswers[[1]]$getComments()
+@ 
+
+\section{Users}
+
+\section{Badges and Tags}
 
 \section{API Keys}
+
+By default, access to the StackExchange API is considered to be more of a trial
+basis affair, and a particular IP address can only make 300 requests per day
+in that manner.  Considering that a large query could result in dozens of
+API requests, this limit won't take you very far.  There's a solution to this
+problem, obtaining a StackExchange API Key.  To do this, you will create a
+dummy application at \url{http://stackapps.com/apps/register}, and at the
+end you'll be given an API Key.  By using this key, you can up your limit
+to be 10,000 requests per day.  To enable the key in your R session, do
+the following, where \Robject{key} is what was given to you:
+
+<<APIKEY,eval=FALSE>>=
+registerAPIKey(key)
+@ 
+
+\section{Session Information}
+
+The version number of R and packages loaded for generating the vignette were:
+
+\begin{verbatim}
+<<echo=FALSE,results=tex>>=
+sessionInfo()
+@
+\end{verbatim}
+
+\end{document}
