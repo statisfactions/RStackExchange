@@ -34,11 +34,9 @@ setRefClass('apiCallQueue',
               checkQueue = function() {
                 if (!is.na(.self$calls[[.self$maxCallsPerPeriod]])) {
                   ## Block until enough time has passed
-                  while (as.numeric(Sys.time() -
-                                    .self$calls[[.self$maxCallsPerPeriod]]) <
+                  while (as.numeric(Sys.time()) -
+                                    as.numeric(.self$calls[[.self$maxCallsPerPeriod]])<
                          .self$periodLength) {
-                    browser()
-                    print(paste("throttling:", as.numeric(Sys.time()-.self$calls[[.self$maxCallsPerPeriod]])))
                     TRUE
                   }
                 }
