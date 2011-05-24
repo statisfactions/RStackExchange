@@ -50,7 +50,7 @@ setMethod("show", signature="seUser", function(object) {
   print(object$getDisplayName())
 })
 
-getUsers <- function(ids, num=NULL, site='stackoverflow') {
+getUsers <- function(ids, num=NULL, site='stackoverflow.com') {
   ## FIXME:  See if parameters work on the site, if so
   ## work this into searchUsers
   userBase(ids, params=NULL, num=num, site=site)
@@ -58,7 +58,7 @@ getUsers <- function(ids, num=NULL, site='stackoverflow') {
 
 searchUsers <- function(num=NULL, filter=NULL, fromDate=NULL, toDate=NULL,
                         min=NULL, max=NULL, sort=NULL, order=NULL,
-                        site='stackoverflow') {
+                        site='stackoverflow.com') {
   params <- buildCommonArgs(filter=filter, fromDate=fromDate, toDate=toDate,
                             min=min,
                            max=max, sort=sort, order=order)

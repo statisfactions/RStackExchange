@@ -1,6 +1,6 @@
 searchStackSite <- function(num=NULL, intitle=NULL, notTagged=NULL,
                             tagged=NULL, min=NULL, max=NULL, order=NULL,
-                            sort=NULL, site='stackoverflow') {
+                            sort=NULL, site='stackoverflow.com') {
   params <- buildCommonArgs(min=min, max=max, order=order, sort=sort)
   for (extraParam in c('intitle', 'notTagged', 'tagged')) {
     val <- get(extraParam)

@@ -16,20 +16,20 @@ setMethod("show", signature('seBadge'), function(object) {
   print(object$getName())
 })
 
-allBadges <- function(num=NULL, site='stackoverflow') {
+allBadges <- function(num=NULL, site='stackoverflow.com') {
   badgeBase('badges', num, site)
 }
 
-nameBadges <- function(num=NULL, site='stackoverflow') {
+nameBadges <- function(num=NULL, site='stackoverflow.com') {
   badgeBase('badges/name', num, site)
 }
   
-tagBadges <- function(num=NULL, site='stackoverflow') {
+tagBadges <- function(num=NULL, site='stackoverflow.com') {
   badgeBase('badges/tags', num, site)
 }
 
 badgeRecipients <- function(ids, fromDate=NULL, toDate=NULL, num=NULL,
-                            site='stackoverflow') {
+                            site='stackoverflow.com') {
   if (length(ids) < 1)
     stop("Must provide at least one badge ID")
   params <- buildCommonArgs(fromDate=fromDate, toDate=toDate)

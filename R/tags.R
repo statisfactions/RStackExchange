@@ -54,7 +54,7 @@ setMethod('show', signature('seTag'), function(object) {
   print(object$getName())
 })
 
-buildTopTags <- function(jsonList, user, site='stackoverflow') {
+buildTopTags <- function(jsonList, user, site='stackoverflow.com') {
   sapply(jsonList, function(x) {
     seTopTagFactory$new(name = x[['tag_name']],
                         questionScore = x[['question_score']],
@@ -67,7 +67,7 @@ buildTopTags <- function(jsonList, user, site='stackoverflow') {
 
 getTags <- function(num=NULL, filter=NULL, fromDate=NULL, toDate=NULL,
                        min=NULL, max=NULL, sort=NULL, order=NULL,
-                    site='stackoverflow') {
+                    site='stackoverflow.com') {
   params <- buildCommonArgs(filter=filter, fromDate=fromDate, toDate=toDate,
                             min=min, max=max, sort=sort, order=order)
   jsonList <- seInterfaceObj$request('tags', NULL, NULL, params, 'tags', num=num,
@@ -83,11 +83,11 @@ getTags <- function(num=NULL, filter=NULL, fromDate=NULL, toDate=NULL,
 
 getTagSynonyms <- function(num=NULL, tags=NULL, fromDate=NULL, toDate=NULL,
                            min=NULL, max=NULL, sort=NULL, order=NULL,
-                           site='stackoverflow') {
+                           site='stackoverflow.com') {
   ## FIXME:  This is all screwed up, need a separate tag synonym class
 }
 
-getTagWikis <- function(tags, num=NULL, site='stackoverflow') {
+getTagWikis <- function(tags, num=NULL, site='stackoverflow.com') {
   ## FIXME:  Not implemented at the moment
 }
 

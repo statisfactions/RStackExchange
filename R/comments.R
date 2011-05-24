@@ -21,7 +21,7 @@ setMethod('show', signature('seComment'), function(object) {
 
 getComments <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
                         min=NULL, max=NULL, sort=NULL, order=NULL,
-                        idsArePosts=FALSE, site='stackoverflow') {
+                        idsArePosts=FALSE, site='stackoverflow.com') {
   params <- buildCommonArgs(fromDate=fromDate, toDate=toDate, min=min,
                             max=max, sort=sort, order=order)
   if (idsArePosts) {

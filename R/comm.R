@@ -37,7 +37,7 @@ setRefClass('apiCallQueue',
                   while (as.numeric(Sys.time() -
                                     .self$calls[[.self$maxCallsPerPeriod]]) <
                          .self$periodLength) {
-                    print("throttling")
+                    print(paste("throttling:", as.numeric(Sys.time()-.self$calls[[.self$maxCallsPerPeriod]])))
                     TRUE
                   }
                 }
@@ -81,7 +81,7 @@ setRefClass('seInterface',
                 callSuper(...)
               },
               request = function(call, vectorized, postVectorized, params,
-                type=NULL, num=NULL, site='stackoverflow') {
+                type=NULL, num=NULL, site='stackoverflow.com') {
                 if (!is.null(num) && (num < 0))
                   stop("num argument must be a positive value")
 
@@ -108,6 +108,7 @@ setRefClass('seInterface',
                   while (TRUE) {
                     page <- page + 1
                     url <- paste(url, '&page=', page, sep='')
+                    print(url)
                     ## We need to be careful of throttling here, as 30 calls in
                     ## 5 seconds will get us blocked.  Being conservative
                     ## (queue holds only 29 elements and we'll diff on 6 seconds)
@@ -122,8 +123,8 @@ setRefClass('seInterface',
                     curTypeResults <- curResults[[type]]
                     out <- c(out, curTypeResults)
                     if (((!is.null(num))&&(length(out) >= num)) ||
-                        (is.null(curResults$total)) ||
-                        (length(curTypeResults) == curResults$total))
+                        (is.null(curResults$total)) || (is.null(curTypeResults)) ||
+                        (length(curTypeResults) >= curResults$total))
                       break
                   }
                 }

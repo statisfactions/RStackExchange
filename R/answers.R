@@ -30,7 +30,7 @@ setMethod("show", signature="seAnswer", function(object) {
 
 getAnswers <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
                        min=NULL, max=NULL, sort=NULL, order=NULL,
-                       site='stackoverflow') {
+                       site='stackoverflow.com') {
   params <- buildCommonArgs(fromDate=fromDate, toDate=toDate, min=min,
                             max=max, sort=sort, order=order)
   jsonList <- seInterfaceObj$request('answers', ids, NULL, params,
@@ -48,12 +48,13 @@ buildAnswers <- function(jsonList, site) {
   ## the appropriate user
   names(users) <- sapply(users, function(x) x$getUserID())
   mapply(function(json, userID, users, site) {
-   comments <- buildComments(json[['coments']], site)
-   if (userID %in% names(users))
+    comments <- buildComments(json[['coments']], site)
+   if ((!is.null(userID)) && (userID %in% names(users))) {
      curUser <- users[[as.character(userID)]]
-   else
+   } else {
      curUser <- seUserFactory$new()
- 
+   }
+    
     seAnswerFactory$new(answerID = json[['answer_id']],
                         accepted = ifelse(json[['accepted']], TRUE, FALSE),
                         questionID = json[['question_id']],

@@ -62,14 +62,14 @@ buildQuestions <- function(jsonList, site) {
 
 getQuestions <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
                          min=NULL, max=NULL, sort=NULL, order=NULL,
-                         tagged=NULL, site='stackoverflow') {
+                         tagged=NULL, site='stackoverflow.com') {
   questionBase(num=num, ids=ids, fromDate=fromDate, toDate=toDate,
                min=min, max=max, sort=sort, order=order, tagged=tagged)
 }
 
 getUnansweredQuestions <- function(num=NULL, fromDate=NULL, toDate=NULL,
                                    min=NULL, max=NULL, sort=NULL, order=NULL,
-                                   tagged=NULL, site='stackoverflow') {
+                                   tagged=NULL, site='stackoverflow.com') {
   ## FIXME:  Dox list 'sort' as a possible argument, but it looks like it doesn't work.
   ## need to investigate this further
   if (!is.null(sort)) {
@@ -83,7 +83,7 @@ getUnansweredQuestions <- function(num=NULL, fromDate=NULL, toDate=NULL,
 
 getNoAnswerQuestions <- function(num=NULL, fromDate=NULL, toDate=NULL,
                                  min=NULL, max=NULL, sort=NULL, order=NULL,
-                                 tagged=NULL, site='stackoverflow') {
+                                 tagged=NULL, site='stackoverflow.com') {
   questionBase(num=num, ids=NULL, fromDate=fromDate, toDate=toDate,
                min=min, max=max, sort=sort, order=order,
                postVex='no-answers', site=site, tagged=tagged)
@@ -91,7 +91,7 @@ getNoAnswerQuestions <- function(num=NULL, fromDate=NULL, toDate=NULL,
 
 getQuestionLinks <- function(num=NULL, ids=NULL, fromDate=NULL,
                              toDate=NULL, min=NULL, max=NULL, sort=NULL,
-                             order=NULL, site='stackoverflow') {
+                             order=NULL, site='stackoverflow.com') {
   if (is.null(ids))
     stop("getQuestionLinks requres at least one id")
   
@@ -102,7 +102,7 @@ getQuestionLinks <- function(num=NULL, ids=NULL, fromDate=NULL,
 
 getQuestionRelated <- function(num=NULL, ids=NULL, fromDate=NULL,
                                toDate=NULL, min=NULL, max=NULL, sort=NULL,
-                               order=NULL, site='stackoverflow') {
+                               order=NULL, site='stackoverflow.com') {
   if (is.null(ids))
     stop("getQuestionRelated requires at least one ID")
   
@@ -115,12 +115,12 @@ getQuestionRelated <- function(num=NULL, ids=NULL, fromDate=NULL,
 
 questionBase <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
                          min=NULL, max=NULL, sort=NULL, order=NULL,
-                         tagged=NULL, site='stackoverflow', postVex=NULL) {
+                         tagged=NULL, site='stackoverflow.com', postVex=NULL) {
   params <- buildCommonArgs(fromDate=fromDate, toDate=toDate, min=min,
                             max=max, sort=sort, order=order)
   if (!is.null(tagged))
     params[['tagged']] <- paste(tagged, collapse=';')
-  params[['body']] <- params[['answers']] <- 'true'
+  params[['body']] <- params[['answers']] <- params[['comments']] <- 'true'
   jsonList <- seInterfaceObj$request('questions', ids, postVex, params,
                                      'questions', num=num, site=site)
   buildQuestions(jsonList, site)

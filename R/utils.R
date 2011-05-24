@@ -1,5 +1,5 @@
-getAPIStr <- function(site='stackoverflow') {
-  paste('http://api.', site, '.com/1.1/', sep='')
+getAPIStr <- function(site='stackoverflow.com') {
+  paste('http://api.', site, '/1.1/', sep='')
 }
 
 convertDate <- function(stackDate) {

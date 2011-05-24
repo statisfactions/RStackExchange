@@ -13,7 +13,7 @@ setMethod('show', signature('sePrivilege'), function(object) {
   print(object$getShortDescription())
 })
 
-getPrivileges <- function(num=NULL, site='stackoverflow') {
+getPrivileges <- function(num=NULL, site='stackoverflow.com') {
   jsonList <- seInterfaceObj$request('privileges', NULL, NULL, NULL, 'privileges', num=num, site)
   sapply(jsonList, function(x) {
     sePrivilegeFactory$new(shortDescription = x[['short_description']],
