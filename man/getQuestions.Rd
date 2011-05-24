@@ -12,15 +12,15 @@ These functions interact with the question functionality of the StackExchange AP
 }
 \usage{
 getQuestions(num = NULL, ids = NULL, fromDate = NULL, toDate = NULL, min = NULL, max = NULL,
-             sort = NULL, order = NULL, tagged = NULL, site = "stackoverflow")
+             sort = NULL, order = NULL, tagged = NULL, site = "stackoverflow.com")
 getUnansweredQuestions(num = NULL, fromDate = NULL, toDate = NULL, min = NULL, max = NULL,
-             sort = NULL, order = NULL, tagged = NULL, site = "stackoverflow")
+             sort = NULL, order = NULL, tagged = NULL, site = "stackoverflow.com")
 getNoAnswerQuestions(num = NULL, fromDate = NULL, toDate = NULL, min = NULL, max = NULL,
-             sort = NULL, order = NULL, tagged = NULL, site = "stackoverflow")
+             sort = NULL, order = NULL, tagged = NULL, site = "stackoverflow.com")
 getQuestionLinks(num = NULL, ids = NULL, fromDate = NULL, toDate = NULL, min = NULL, max = NULL,
-             sort = NULL, order = NULL, site = "stackoverflow")
+             sort = NULL, order = NULL, site = "stackoverflow.com")
 getQuestionRelated(num = NULL, ids = NULL, fromDate = NULL, toDate = NULL, min = NULL, max = NULL,
-             sort = NULL, order = NULL, site = "stackoverflow")
+             sort = NULL, order = NULL, site = "stackoverflow.com")
 }
 \arguments{
   \item{num}{An upper bound on the number of results to return}

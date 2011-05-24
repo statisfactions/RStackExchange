@@ -8,7 +8,7 @@
 \usage{
 searchStackSite(num = NULL, intitle = NULL, notTagged = NULL,
                 tagged = NULL, min = NULL, max = NULL, order = NULL,
-                sort = NULL, site = "stackoverflow") 
+                sort = NULL, site = "stackoverflow.com") 
 }
 \arguments{
   \item{num}{An upper bound on the number of results to return}

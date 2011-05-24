@@ -6,7 +6,7 @@
   StackExchange site
 }
 \usage{
-getPrivileges(num = NULL, site = "stackoverflow")
+getPrivileges(num = NULL, site = "stackoverflow.com")
 }
 \arguments{
   \item{num}{An upper bound on the number of results to return}

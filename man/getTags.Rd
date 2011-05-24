@@ -9,10 +9,10 @@
 \usage{
 getTags(num = NULL, filter = NULL, fromDate = NULL, toDate = NULL,
         min = NULL, max = NULL, sort = NULL, order = NULL,
-        site = "stackoverflow")
+        site = "stackoverflow.com")
 getTagSynonyms(num = NULL, tags = NULL, fromDate = NULL, toDate = NULL,
                min = NULL, max = NULL, sort = NULL, order = NULL,
-               site = 'stackoverflow')
+               site = 'stackoverflow.com')
 }
 
 \arguments{

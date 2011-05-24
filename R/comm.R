@@ -37,6 +37,7 @@ setRefClass('apiCallQueue',
                   while (as.numeric(Sys.time() -
                                     .self$calls[[.self$maxCallsPerPeriod]]) <
                          .self$periodLength) {
+                    browser()
                     print(paste("throttling:", as.numeric(Sys.time()-.self$calls[[.self$maxCallsPerPeriod]])))
                     TRUE
                   }
@@ -94,10 +95,13 @@ setRefClass('seInterface',
                 if (length(vectorized) == 0) {
                   vectorStrs <- character()
                 } else {
-                  if ((is.null(num)) ||
-                      (num > length(vectorized))) {
-                    num <-  length(vectorized)
-                  }
+                  ## FIXME:  Not sure if this block was put in due to fixing a bug (particularly)
+                  ## the 'is.null' or just me trying to be nice, but it is incorrect as there are
+                  ## some cases where the vectorized argument doesn't directly tie to the output
+                  ##                  if ((is.null(num)) ||
+                  ##                      (num > length(vectorized))) {
+                  ##                    num <-  length(vectorized)
+                  ##                  }
                   vectorStrs <- vectorizeArgs(vectorized)
                 }
                 urls <- paste(getAPIStr(site), '/', call, '/', vectorStrs, '/',
@@ -108,7 +112,6 @@ setRefClass('seInterface',
                   while (TRUE) {
                     page <- page + 1
                     url <- paste(url, '&page=', page, sep='')
-                    print(url)
                     ## We need to be careful of throttling here, as 30 calls in
                     ## 5 seconds will get us blocked.  Being conservative
                     ## (queue holds only 29 elements and we'll diff on 6 seconds)

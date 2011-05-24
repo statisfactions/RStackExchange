@@ -9,11 +9,11 @@
   StackExchange site
 }
 \usage{
-allBadges(num=NULL, site='stackoverflow')
-nameBadges(num=NULL, site='stackoverflow')
-tagBadges(num=NULL, site='stackoverflow')
+allBadges(num=NULL, site='stackoverflow.com')
+nameBadges(num=NULL, site='stackoverflow.com')
+tagBadges(num=NULL, site='stackoverflow.com')
 badgeRecipients(ids, fromDate=NULL, toDate=NULL, num=NULL,
-                site='stackoverflow')
+                site='stackoverflow.com')
 }
 \arguments{
   \item{num}{An upper bound on the number of results to return}
@@ -44,5 +44,5 @@ badgeRecipients(ids, fromDate=NULL, toDate=NULL, num=NULL,
 \examples{
     zz <- allBadges(num=25)
     ids <- sapply(zz, function(x) x$getBadgeID())
-    xx <- badgeRecipients(ids)
+    xx <- badgeRecipients(ids, num=5)
 }

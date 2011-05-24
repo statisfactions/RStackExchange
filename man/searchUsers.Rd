@@ -11,8 +11,8 @@
 \usage{
 searchUsers(num = NULL, filter = NULL, fromDate = NULL, toDate = NULL,
             min = NULL, max = NULL, sort = NULL, order = NULL,
-            site = "stackoverflow")
-getUsers(ids, num=NULL, site='stackoverflow')
+            site = "stackoverflow.com")
+getUsers(ids, num=NULL, site='stackoverflow.com')
 }
 \arguments{
   \item{num}{An upper bound on the number of results to return}

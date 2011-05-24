@@ -137,7 +137,7 @@ question askers are for the {\em javascript} tag:
 
 <<Javascript>>=
    tag <- getTags(num=1, filter='javascript')[[1]]
-   tag$topAskers('month')
+   tag$topAskers('month', num=5)
 @ 
 
 Or given a user, we can see what tags they like to work with, first
@@ -145,9 +145,9 @@ looking at the top 5 tags that they tend to answer questions about as
 well as ask questions about.
 
 <<userTags>>=
-   ansTags <- maxRepUser$topTagsByAnswers(num=10)
+   ansTags <- maxRepUser$topTagsByAnswers(num=5)
    ansTags
-   quesTags <- maxRepUser$topTagsByQuestions(num=10)
+   quesTags <- maxRepUser$topTagsByQuestions(num=5)
    quesTags
 @ 
 

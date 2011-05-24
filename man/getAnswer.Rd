@@ -10,7 +10,7 @@ Functions to manipulate StackExchange answers
 \usage{
 getAnswers(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
            min=NULL, max=NULL, sort=NULL, order=NULL,
-           site="stackoverflow")
+           site="stackoverflow.com")
 }
 \arguments{
   \item{num}{An upper bound on the number of results to return}
