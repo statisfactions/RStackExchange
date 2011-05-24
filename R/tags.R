@@ -1,11 +1,11 @@
 ## FIXME:  Skipping wikis for now
 
-getTop <- function(obj, type, period) {
+getTop <- function(obj, type, period, num) {
   if (! period %in% c('month', 'all-time'))
     stop("period parameter must be 'month' or 'all-time'")
   call <- paste('tags', obj$getName(), type, period, sep='/')
   json <- seInterfaceObj$request(call, NULL, NULL, NULL, type='top_users',
-                                 site=obj$getSite())
+                                 num=num, site=obj$getSite())
   ## These are partial user objects, get the IDs and retrieve the full ones
   ids <- sapply(json, function(x) x[['user']][['user_id']])
   getUsers(ids=ids)
@@ -18,11 +18,11 @@ setRefClass("seTag",
               fulfillsRequired = 'logical',
               site = 'character'),
             methods = list(
-              topAskers = function(period) {
-                getTop(.self, 'top-askers', period)
+              topAskers = function(period, num=NULL) {
+                getTop(.self, 'top-askers', period, num)
               },
-              topAnswerers = function(period) {
-                getTop(.self, 'top-answerers', period)
+              topAnswerers = function(period, num=NULL) {
+                getTop(.self, 'top-answerers', period, num)
               }
             )
             )

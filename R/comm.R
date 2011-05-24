@@ -56,7 +56,7 @@ vectorizeArgs <- function(args) {
   ## StackExchange requires encoded
   ## hyphens when it comes to the vectorized inputs, for now,
   ## change these ourselves
-  args <- gsub('-', '%3B', args)
+##  args <- gsub('-', '%3B', args)
  
   ## long vectorized strings can make overly long URLs,
     ## batch these if necessary to keep sane URL lengths

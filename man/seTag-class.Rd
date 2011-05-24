@@ -21,10 +21,12 @@ Provides a model representing a tag from a StackExchange site
 
 \section{Methods}{
   \describe{
-    \item{\code{topAskers(period)}:}{Retrieves the \code{seUser} objects for the
+    \item{\code{topAskers(period, num=NULL)}:}{Retrieves the
+      \code{seUser} objects for the 
       people who have asked the most questions with this tag for a given
-      period, either \code{all-time} or \code{month}}
-    \item{\code{topAnswerers(period)}:}{Retrieves the \code{seUser}
+      period, either \code{all-time} or \code{month}.  If \code{num}
+      is specified, will return at most \code{num} results.}
+    \item{\code{topAnswerers(period, num=NULL)}:}{Retrieves the \code{seUser}
       objects for the people who have answered the most questions with this
       tag for a given  period, either \code{all-time} or \code{month}}
   }
