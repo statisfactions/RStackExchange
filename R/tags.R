@@ -68,7 +68,7 @@ buildTopTags <- function(jsonList, user, site='stackoverflow.com') {
 getTags <- function(num=NULL, filter=NULL, fromDate=NULL, toDate=NULL,
                        min=NULL, max=NULL, sort=NULL, order=NULL,
                     site='stackoverflow.com') {
-  params <- buildCommonArgs(filter=filter, fromDate=fromDate, toDate=toDate,
+  params <- buildCommonArgs(filter=filter, fromdate=fromDate, todate=toDate,
                             min=min, max=max, sort=sort, order=order)
   jsonList <- seInterfaceObj$request('tags', NULL, NULL, params, 'tags', num=num,
                                      site=site)

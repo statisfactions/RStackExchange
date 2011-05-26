@@ -59,7 +59,7 @@ getUsers <- function(ids, num=NULL, site='stackoverflow.com') {
 searchUsers <- function(num=NULL, filter=NULL, fromDate=NULL, toDate=NULL,
                         min=NULL, max=NULL, sort=NULL, order=NULL,
                         site='stackoverflow.com') {
-  params <- buildCommonArgs(filter=filter, fromDate=fromDate, toDate=toDate,
+  params <- buildCommonArgs(filter=filter, fromdate=fromDate, todate=toDate,
                             min=min,
                            max=max, sort=sort, order=order)
   userBase(NULL, params, num, site)

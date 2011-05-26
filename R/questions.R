@@ -116,7 +116,7 @@ getQuestionRelated <- function(num=NULL, ids=NULL, fromDate=NULL,
 questionBase <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
                          min=NULL, max=NULL, sort=NULL, order=NULL,
                          tagged=NULL, site='stackoverflow.com', postVex=NULL) {
-  params <- buildCommonArgs(fromDate=fromDate, toDate=toDate, min=min,
+  params <- buildCommonArgs(fromdate=fromDate, todate=toDate, min=min,
                             max=max, sort=sort, order=order)
   if (!is.null(tagged))
     params[['tagged']] <- paste(tagged, collapse=';')

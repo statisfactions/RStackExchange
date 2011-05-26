@@ -13,11 +13,14 @@ convertDate <- function(stackDate) {
 
 buildCommonArgs <- function(filter=NULL, min=NULL,
                             max=NULL, sort=NULL, order=NULL,
-                            fromDate=NULL, toDate=NULL) {
+                            fromdate=NULL, todate=NULL) {
   out <- list()
-  fromDate <- as.numeric(fromDate)
-  toDate <- as.numeric(toDate)
-  for (arg in c('filter', 'min', 'max', 'sort', 'order', 'fromDate', 'toDate')) {
+
+  if (!is.null(fromdate))
+    fromdate <- as.numeric(fromdate)
+  if (!is.null(todate))
+    todate <- as.numeric(todate)
+  for (arg in names(formals())) {
     val <- get(arg)
     if (length(val) > 0)
       out[[arg]] <- val

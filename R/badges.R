@@ -32,7 +32,7 @@ badgeRecipients <- function(ids, fromDate=NULL, toDate=NULL, num=NULL,
                             site='stackoverflow.com') {
   if (length(ids) < 1)
     stop("Must provide at least one badge ID")
-  params <- buildCommonArgs(fromDate=fromDate, toDate=toDate)
+  params <- buildCommonArgs(fromdate=fromDate, todate=toDate)
   jsonList <- seInterfaceObj$request('badges', ids, NULL, params, 'users',
                                      num=num, site=site)
   sapply(jsonList, buildUser, site)

@@ -31,7 +31,7 @@ setMethod("show", signature="seAnswer", function(object) {
 getAnswers <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
                        min=NULL, max=NULL, sort=NULL, order=NULL,
                        site='stackoverflow.com') {
-  params <- buildCommonArgs(fromDate=fromDate, toDate=toDate, min=min,
+  params <- buildCommonArgs(fromdate=fromDate, todate=toDate, min=min,
                             max=max, sort=sort, order=order)
   jsonList <- seInterfaceObj$request('answers', ids, NULL, params,
                                      'answers', num=num, site=site)
