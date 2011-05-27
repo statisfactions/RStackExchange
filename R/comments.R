@@ -49,10 +49,11 @@ buildComments <- function(jsonList, site) {
   ## the appropriate user
   names(users) <- sapply(users, function(x) x$getUserID())
   mapply(function(json, userID, users, site) {
-    if (userID %in% names(users))
+    if ((!is.null(userID)) && (userID %in% names(users))) {
       curUser <- users[[as.character(userID)]]
-    else
+    } else {
       curUser <- seUserFactory$new()
+    }
     seCommentFactory$new(commentID = json[['comment_id']],
                          creationDate = convertDate(json[['creation_date']]),
                          postID = json[['post_id']],

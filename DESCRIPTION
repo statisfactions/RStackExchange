@@ -1,7 +1,7 @@
 Package: RStackExchange
 Title: R based StackExchange client
 Description: Provides an interface to the StackExchange web API
-Version: 0.1.1
+Version: 0.1.2
 Author: Jeff Gentry <geoffjentry@gmail.com>
 Maintainer: Jeff Gentry <geoffjentry@gmail.com>
 Depends: RCurl, RJSONIO, methods
