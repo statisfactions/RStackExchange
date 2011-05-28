@@ -4,7 +4,7 @@ Description: Provides an interface to the StackExchange web API
 Version: 0.1.2
 Author: Jeff Gentry <geoffjentry@gmail.com>
 Maintainer: Jeff Gentry <geoffjentry@gmail.com>
-Depends: RCurl, RJSONIO, methods
+Depends: R  (>= 2.12.0), RCurl, RJSONIO, methods
 License: Artistic-2.0
 Collate: comm.R utils.R users.R answers.R badges.R comments.R
 	privileges.R questions.R revisions.R search.R tags.R
