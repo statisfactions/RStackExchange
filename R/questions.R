@@ -64,7 +64,7 @@ getQuestions <- function(num=NULL, ids=NULL, fromDate=NULL, toDate=NULL,
                          min=NULL, max=NULL, sort=NULL, order=NULL,
                          tagged=NULL, site='stackoverflow.com') {
   questionBase(num=num, ids=ids, fromDate=fromDate, toDate=toDate,
-               min=min, max=max, sort=sort, order=order, tagged=tagged)
+               min=min, max=max, sort=sort, order=order, tagged=tagged, site=site)
 }
 
 getUnansweredQuestions <- function(num=NULL, fromDate=NULL, toDate=NULL,
